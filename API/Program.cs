@@ -1,28 +1,25 @@
+using API.Controllers;
+using Application.Article;
 using Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence;
+using System.Reflection;
+using API.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Creating an service extentions to add services to the container.(Can clean up Program.cs a bit)
+builder.Services.AppService(builder.Configuration);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(opt=>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// It is important that UseCors must before UseAuthorization
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 
