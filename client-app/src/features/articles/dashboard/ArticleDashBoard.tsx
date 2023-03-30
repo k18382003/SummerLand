@@ -14,15 +14,18 @@ interface Props {
     editMode : boolean;
     openForm : (id?: string) => void;
     closeForm : () => void;
+    createOrEdit : (article : Article) => void; 
+    deleteArticle : (id : string) => void;
+    saveArticle: boolean;
 }
 
 export default function ArticleDashBoard({articles, selectedArticle, selectArticle, cancelSelectArticle,
-editMode, openForm, closeForm} : Props){
+editMode, openForm, closeForm, createOrEdit, deleteArticle, saveArticle} : Props){
     
     return(
         <Grid>
             <Grid.Column width="6">
-                <ArticleList articles={articles} selectArticle={selectArticle} />
+                <ArticleList articles={articles} selectArticle={selectArticle} deleteArticle={deleteArticle} submit={saveArticle} />
             </Grid.Column>
             <Grid.Column width="10">
                 {selectedArticle && !editMode &&
@@ -31,7 +34,7 @@ editMode, openForm, closeForm} : Props){
                 openForm={openForm}/>
                 }
                 {editMode &&
-                <ArticleForm article={selectedArticle} closeForm={closeForm}/>}
+                <ArticleForm article={selectedArticle} closeForm={closeForm} createOrEdit={createOrEdit} saveArticle={saveArticle}/>}
             </Grid.Column>
         </Grid>
     )

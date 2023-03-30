@@ -1,12 +1,13 @@
 import React, { ChangeEvent, SyntheticEvent, useState } from 'react'
-import { Button, Dropdown, DropdownItem, DropdownItemProps, Form, FormDropdown, Image, Segment } from 'semantic-ui-react';
+import { Button, Form, Segment } from 'semantic-ui-react';
 import { Article } from '../../../app/models/article'
-import TextFormattingGroupIcon from '../../TextFormatting';
-import {v4 as uuid} from 'uuid';
+import QuillEditor from '../../../app/common/QuillEditor';
 
 interface Props{
     article: Article | undefined;
-    closeForm: () => void
+    closeForm: () => void;
+    createOrEdit: (article: Article) => void;
+    saveArticle: boolean;
 }
 
 const TopicOptions = [
@@ -40,7 +41,7 @@ const TopicOptions = [
   ]
 
   
-  export default function ArticleForm({article : selectedArticle, closeForm}:Props)
+  export default function ArticleForm({article : selectedArticle, closeForm, createOrEdit, saveArticle}:Props)
   {
       const initialState = selectedArticle ?? {
         artID : '',
@@ -53,12 +54,11 @@ const TopicOptions = [
       const [article, setArticle] = useState(initialState);
 
       function handleSubmit(){
-        console.log(article);
+        createOrEdit(article);
       }
 
-      function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
+      function handleInputChange(event: ChangeEvent<HTMLInputElement>){
         const {name, value} = event.target;
-        console.log(event.target)
         // Spread into article (matching the name with the article object and set the value to it)
         setArticle({...article, [name]: value})
       }
@@ -68,17 +68,19 @@ const TopicOptions = [
         setArticle({...article, category : found?.[1]})
       }
 
+      function handleEditorChange(value: string){
+        setArticle({...article, content : value})
+      }
+
       return(
         <Segment clearing>
-            <Form>
+            <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input placeholder='Title' value={article.title} name='title' onChange={handleInputChange}></Form.Input>
-                <TextFormattingGroupIcon />
-                <Form.TextArea rows='15' placeholder='Content' value={article.content} name='content' onChange={handleInputChange}>
-                </Form.TextArea>
+                <QuillEditor value={article.content} onChange={handleEditorChange}/>
                 <Form.Dropdown search selection placeholder='Category' options={TopicOptions} value={article.category} name='category' onChange={handleDropDownChange}>
                 </Form.Dropdown>
                 <Button onClick={() => closeForm()} floated='right' color='grey' content='Cancel'/>
-                <Button floated='right' color='black' type='submit' content='Save'/>
+                <Button loading={saveArticle} floated='right' color='black' type='submit' content='Save'/>
             </Form>
         </Segment>
     )

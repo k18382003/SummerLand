@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './styles.css'
 import { Header, Container } from 'semantic-ui-react';
-import List from 'semantic-ui-react/dist/commonjs/elements/List';
-import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
 import { Article } from '../models/article';
 import NavBar from './NavBar';
 import ArticleDashBoard from '../../features/articles/dashboard/ArticleDashBoard';
+import agent from '../api/agent';
+import LoadingComp from './Loading';
+import {v4 as uuid} from 'uuid';
+import "react-quill/dist/quill.core.css";
 
 function App() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [article, setSelectArticle] = useState<Article | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, showLoading] = useState(true);
+  const [submit, setSubmit] = useState(false);
 
   useEffect(() => {
-    axios.get<Article[]>('http://localhost:5000/api/article')
-    .then(res => {
-      setArticles(res.data);
-    })
+    agent.Articles.List().then(res => {
+      setArticles(res);
+      showLoading(false);
+    }) 
   }, []) // to avoid the request fire infinitly, we give [], to let it fire only one time
 
   // get the selected article
@@ -41,6 +44,45 @@ function App() {
     setEditMode(false);
   }
 
+  function handleCreateOrEditArticle(article:Article)
+  {
+    // Edit if has artID
+    setSubmit(true);
+    if (article.artID){
+      agent.Articles.Update(article).then(() =>{
+        setArticles([...articles.filter(x => x.artID !== article.artID), article])
+        setSelectArticle(article);
+        setEditMode(false);
+        setSubmit(false);
+      })
+    }
+    else
+    {
+      // Create if artID is undefined
+      article.artID = uuid();
+      article.createDate = new Date().toISOString();
+      agent.Articles.Create(article).then(() =>{
+        setArticles([...articles, article])
+        setSelectArticle(article);
+        setEditMode(false);
+        setSubmit(false);
+      })
+    }
+  }
+
+  function handleDelete(id : string)
+  {
+    setSubmit(true);
+    agent.Articles.Delete(id).then(() => {
+      setArticles([...articles.filter(x => x.artID !== id)]);
+      setSubmit(false);
+    })
+  }
+
+
+
+  if (loading) return <LoadingComp inverted={true} message={"Loading Articles..."}/>
+
   return (
     //Need to have <> </> to let react know its fragment = <React.fragment>
     <> 
@@ -54,6 +96,9 @@ function App() {
           editMode = {editMode}
           openForm = {handleFormOpen}
           closeForm = {handleFormClose}
+          createOrEdit = {handleCreateOrEditArticle}
+          deleteArticle = {handleDelete}
+          saveArticle = {submit}
         />
       </Container>
     </>
@@ -61,3 +106,4 @@ function App() {
 }
 
 export default App;
+

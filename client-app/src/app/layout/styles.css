@@ -6,3 +6,16 @@ body {
   background-image: linear-gradient(135deg, #100e09 0%, #888784 69%);
 }
 
+.ql-editor {
+  min-height:200px;
+}
+
+#textContent {
+  white-space: pre;
+}
+
+#textContent img{
+  width : 100%;
+  object-fit: contain;
+}
+
