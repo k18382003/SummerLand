@@ -1,19 +1,22 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'semantic-ui-css/semantic.min.css'
-import './app/layout/styles.css'
-// import App from './app/layout/App';
+import 'semantic-ui-css/semantic.min.css';
+import './app/layout/styles.css';
+import 'react-calendar/dist/Calendar.css';
 import reportWebVitals from './reportWebVitals';
-import { render } from "react-dom";
-import App from './app/layout/App';
-import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { StoreContext, store } from './app/stores/store';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './app/route/Routes';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
-    <App />
+  <StoreContext.Provider value = {store}>
+    <RouterProvider router={router}/>
+  </StoreContext.Provider>
 );
 
 

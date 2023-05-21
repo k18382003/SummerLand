@@ -1,22 +1,27 @@
-﻿using Domain;
+﻿using Application.Core;
+using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Article
 {
     public class AddArticle
     {
-        public class Command: IRequest<Unit>
+        public class Command: IRequest<Response<Unit>>
         {
             public Articles Article { get; set; }
         }
 
-        public class Handler: IRequestHandler<Command, Unit>
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Article).SetValidator(new ArticleValidators());
+            }
+        }
+
+        public class Handler: IRequestHandler<Command, Response<Unit>>
         {
             private readonly DataContext _Context;
             public Handler(DataContext context) 
@@ -24,15 +29,20 @@ namespace Application.Article
                 _Context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Response<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 // we'll firstly save the change to memory
                 _Context.Articles.Add(request.Article);
 
                 // and then save it to db
-                await _Context.SaveChangesAsync();
+                var response = await _Context.SaveChangesAsync();
 
-                return Unit.Value;
+                // SaveChangesAsync will return number of state entries to the database
+                // if not returning any entries means that create failed
+                if (response == 0)
+                    return Response<Unit>.Failure("Unable to save the article");
+
+                return Response<Unit>.Success(Unit.Value);
             }
         }
 

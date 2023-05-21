@@ -1,8 +1,9 @@
-import { DeltaStatic, Sources } from "quill";
+import { useField } from "formik";
 import ReactQuill from "react-quill";
 
 interface props{
-  value: string;
+  value: string,
+  name:string,
   onChange : (value: string) => void 
 }
 
@@ -10,6 +11,7 @@ const modules = {
   toolbar: [
     [{ 'header': [1, 2, false] }],
     ['bold', 'italic', 'underline','strike', 'blockquote'],
+    [{ 'color': [] }, { 'background': [] }],
     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
     ['link', 'image'],
     ['clean']
@@ -20,14 +22,19 @@ const formats = [
   'header',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
   'list', 'bullet', 'indent',
-  'link', 'image'
+  'link', 'image', 'color', 'background'
 ]
 
+function handleQuillEditor_update () {
+  console.log('blur activated!')
+}
 
-export default function QuillEditor({value, onChange} : props){
+
+export default function QuillEditor({value, onChange, name} : props){
+  const [field, meta, helper] = useField(name);
   return (
-    <div className="quill_editor">
-      <ReactQuill onChange={onChange} theme="snow" modules={modules} formats={formats} value={value} preserveWhitespace={true}/> 
+    <div className="quill_editor" onBlur={()=> helper.setTouched(true)}>
+      <ReactQuill onChange={onChange} value={value} theme="snow" modules={modules} formats={formats} preserveWhitespace={true}/> 
     </div>
   );
 }

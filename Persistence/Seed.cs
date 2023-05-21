@@ -1,16 +1,29 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                var users = new List<AppUser>()
+                {
+                    new AppUser(){displayName="Summer", UserName="summer", Email="summer@gmail.com" },
+                    new AppUser(){displayName="Alice", UserName="alice", Email="alice@gmail.com" },
+                    new AppUser(){displayName="Bob", UserName="bob", Email="bob@gmail.com" }
+                };
+
+                foreach (var user in users) 
+                {
+                    // Don't need to save change, CreateAsync will create and save at the same time
+                    await userManager.CreateAsync(user, "Passw0rd");
+                }
+            }
+
+
             // if we have creating some new data, then just return
             if (context.Articles.Any()) return;
 

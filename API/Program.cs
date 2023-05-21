@@ -7,39 +7,59 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using System.Reflection;
 using API.Extentions;
+using API.Middlewares;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Creating an service extentions to add services to the container.(Can clean up Program.cs a bit)
 builder.Services.AppService(builder.Configuration);
+builder.Services.IdentityService(builder.Configuration);
 
-builder.Services.AddControllers();
+// Apply the authentication policy to all the controllers
+builder.Services.AddControllers(
+    opt =>
+    {
+        var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        opt.Filters.Add(new AuthorizeFilter(policy));
+    }
+);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Exception Middleware needs to be at the top of the request pipeline(Middleware tree)
+app.UseMiddleware<ExceptionMiddleware>();
+
 // It is important that UseCors must before UseAuthorization
 app.UseCors("CorsPolicy");
 
+// Authentication must before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
-var services =scope.ServiceProvider;
+var services = scope.ServiceProvider;
 
 try
 {
     var context = services.GetRequiredService<DataContext>();
-    // To update our database up to the latest 
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    // To update our database up to the latest
     await context.Database.MigrateAsync();
     // Implementing the seed data if there is no data in the db
-    await Seed.SeedData(context);
+    await Seed.SeedData(context, userManager);
 }
 catch(Exception ex)
 {
     var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "Migrant error");
+    logger.LogError(ex, "Migrate error");
 }
 
 app.Run();

@@ -1,31 +1,33 @@
 ﻿using Application.Article;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class ArticleController : BaseAPIController
     {
         [HttpGet] //end point : api/articles
-        public async Task<ActionResult<List<Articles>>> Articles()
+        public async Task<IActionResult> Articles()
         {
             // Use Mediator to access application functions
-            return await Mediator.Send(new ArticleList.Query());
+            return ResponseHandler(await Mediator.Send(new ArticleList.Query()));
         }
 
         [HttpGet("{articleid}")] //end point : api/articles/articleid
-        public async Task<ActionResult<Articles>> Articles(Guid ArticleID)
+        public async Task<IActionResult> Articles(Guid ArticleID)
         {
-            return await Mediator.Send(new ArticleDetail.Query { ArtcileID = ArticleID });
+            return ResponseHandler(await Mediator.Send(new ArticleDetail.Query { ArtcileID = ArticleID }));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddArticles(Articles article)
         { 
-            return Ok(await Mediator.Send(new AddArticle.Command { Article = article }));
+            return ResponseHandler(await Mediator.Send(new AddArticle.Command { Article = article }));
         }
 
         // replacing existing value, we can use httpput
@@ -34,13 +36,13 @@ namespace API.Controllers
         {
             // assigning artitcle ID to our Article objects
             article.ArtID = ArticleID;
-            return Ok(await Mediator.Send(new EditAtricle.Command {ArtID = ArticleID, Article = article }));
+            return ResponseHandler(await Mediator.Send(new EditAtricle.Command {ArtID = ArticleID, Article = article }));
         }
 
         [HttpDelete("{articleid}")]
         public async Task<IActionResult> DeleteArticle(Guid ArticleID)
         {
-            return Ok(await Mediator.Send(new DeleteArticle.Command { ArtID = ArticleID }));   
+            return ResponseHandler(await Mediator.Send(new DeleteArticle.Command { ArtID = ArticleID }));   
         }
     }
 }
