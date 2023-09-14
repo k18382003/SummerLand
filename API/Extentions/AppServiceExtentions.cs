@@ -1,6 +1,13 @@
-﻿using Application.Article;
+﻿using API.Services;
+using Application.Article;
+using Application.Core;
+using Application.Interface;
+using Application.Photos;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrustructure.Photos;
+using Infrustructure.Security;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Globalization;
@@ -24,7 +31,10 @@ namespace API.Extentions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:3000");
                 });
             });
 
@@ -36,11 +46,21 @@ namespace API.Extentions
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en");
 
             // add a AutoMapper service
-            services.AddAutoMapper(typeof(EditAtricle).Assembly);
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             // add Validation serivce
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<AddArticle>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotos, PhotoAccessor>();
+            services.AddScoped<EmailService>();
+            services.Configure<IdentityOptions>(opt =>
+            {
+                opt.SignIn.RequireConfirmedEmail = true;
+            });
+            services.Configure<AzureSetting>(config.GetSection("AzureBlobStorage"));
+            services.AddSignalR();
 
             return services;
         }

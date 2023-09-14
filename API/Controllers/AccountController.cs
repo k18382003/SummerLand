@@ -1,6 +1,8 @@
 ﻿using API.DTOs;
 using API.Services;
+using Azure.Core;
 using Domain;
+using FluentValidation.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,26 +18,39 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _UserManager;
         private readonly TokenServices _Token;
+        private readonly EmailService _EmailService;
 
-        public AccountController(UserManager<AppUser> userManager, TokenServices token)
+        public AccountController(UserManager<AppUser> userManager, TokenServices token, EmailService emailService)
         {
             _UserManager = userManager;
             _Token = token;
+            _EmailService = emailService;
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _UserManager.FindByEmailAsync(loginDto.Email);
+            var user = await _UserManager.Users.Include(p => p.Photos)
+                .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
             if (user == null) return Unauthorized();
 
             var result = await _UserManager.CheckPasswordAsync(user, loginDto.Password);
+            
+            var IsEmailConfirmed = await _UserManager.IsEmailConfirmedAsync(user);
+
+            if (!IsEmailConfirmed)
+                return new UserDto
+                {
+                    userName = user.UserName,
+                    displayName = user.DisplayName,
+                    emailConfirmed = false
+                };
 
             if (result)
             {
-                return createUserDto(user);
+                return createUserDto(user);                
             }
             
             return Unauthorized();
@@ -60,7 +75,7 @@ namespace API.Controllers
 
             var user = new AppUser
             {
-                displayName = register.DisplayName,
+                DisplayName = register.DisplayName,
                 Email = register.Email,
                 UserName = register.UserName,
             };
@@ -69,6 +84,15 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
+                var token = await _UserManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmLink = Url.Action("EmailConfirm", "Email", new {token, email = user.Email}, Request.Scheme);
+                var confirmed = _EmailService.SendEmail(user.Email, confirmLink);
+
+                if (!confirmed) 
+                {
+                    return BadRequest("Email Not Confirmed");
+                }
+
                 return createUserDto(user);
             }
 
@@ -80,7 +104,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _UserManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            var user = await _UserManager.Users.Include(x => x.Photos)
+                .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
             return createUserDto(user);
         }
@@ -90,10 +115,11 @@ namespace API.Controllers
         {
             return new UserDto
             {
-                displayName = user.displayName,
-                image = null,
+                displayName = user.DisplayName,
+                image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
                 userName = user.UserName,
                 token = _Token.CreateToken(user),
+                emailConfirmed = true
             };
         }
     }   

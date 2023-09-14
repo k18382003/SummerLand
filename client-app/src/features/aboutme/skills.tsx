@@ -5,7 +5,7 @@ export default function Skills(){
         <Segment raised>
             <Header as='h2'>Skills</Header>
             <Divider />
-            <Card.Group>
+            <Card.Group centered>
                 <Card>
                     <Card.Content>
                         <Image floated='left' src={require('../../images/language.png')} avatar></Image>

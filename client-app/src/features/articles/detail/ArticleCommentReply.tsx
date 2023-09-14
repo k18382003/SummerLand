@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { Button, Comment, Form } from 'semantic-ui-react'
+import { Comment as Com } from '../../../app/models/comment';
 
-export default function ArticleCommentReply() {
+interface Props {
+    parentComment: Com;
+}
+
+
+export default function ArticleCommentReply({ parentComment } : Props) {
+
+    const [target, setTarget] = useState("");
+
+    const handleClick = (event : SyntheticEvent<HTMLButtonElement>) => {
+        setTarget(event.currentTarget.name);
+    }
+
     return (
         <Comment.Group >
             <Comment>
@@ -12,6 +25,8 @@ export default function ArticleCommentReply() {
                                 content='Add Reply'
                                 labelPosition='left'
                                 icon='edit'
+                                name={target}
+                                onClick={(e)=> handleClick(e)}
                                 secondary
                             />
                     </Form>

@@ -1,33 +1,33 @@
 import { action, makeAutoObservable, runInAction } from "mobx";
 import { Article } from "../models/article";
 import agent from "../api/agent";
-import { v4 as uuid } from "uuid";
 import moment from "moment";
+import { store } from "./store";
 
 export default class ArticleStore {
     articlesMap = new Map<string, Article>();
-    selectedarticle : Article | undefined = undefined
-    editMode : boolean = false
-    loading : boolean = false
-    loadinginitial : boolean = false;
-    
-    constructor () {
+    selectedarticle: Article | undefined = undefined
+    editMode: boolean = false
+    loading: boolean = false
+    loadinginitial: boolean = false;
+
+    constructor() {
         makeAutoObservable(this)
     }
-    
+
     get articleByDate() {
-        return Array.from(this.articlesMap.values()).sort((a, b) => 
-        Date.parse(a.createDate) - Date.parse(b.createDate))
+        return Array.from(this.articlesMap.values()).sort((a, b) =>
+            Date.parse(a.createDate) - Date.parse(b.createDate))
     }
-    
-    groupArticles = () => { 
+
+    groupArticles = () => {
         return Object.entries(
             this.articleByDate.reduce((articles, article) => {
                 // const date = article.createDate;
                 const date = moment(article.createDate).format("MMM DD YYYY");
                 articles[date] = articles[date] ? [...articles[date], article] : [article];
                 return articles;
-            }, {} as {[key : string] : Article[]})
+            }, {} as { [key: string]: Article[] })
         )
     }
 
@@ -40,6 +40,8 @@ export default class ArticleStore {
         try {
             var articles = await agent.Articles.List();
             articles.forEach((item) => {
+                item.myFav = item.favoriteBy?.findIndex(a => a.userName === store.accountstore.currentUser?.userName) != -1
+                item.isauthor = store.accountstore.currentUser?.userName == item.authorName
                 this.articlesMap.set(item.artID, item);
                 this.setLoadingInitial(false)
             })
@@ -80,25 +82,29 @@ export default class ArticleStore {
     //     }
     // }
     //#endregion
-   
-    setLoadingInitial (state:boolean){
+
+    setLoadingInitial(state: boolean) {
         this.loadinginitial = state;
     }
 
     LoadArticle = async (id: string) => {
         this.setLoadingInitial(true);
         let article = this.articlesMap.get(id);
-        if (article)
-        {
+        if (article) {
+            article.myFav = article.favoriteBy?.find(a => a.userName === store.accountstore.currentUser?.userName) !== undefined
+            article.isauthor = store.accountstore.currentUser?.userName == article.authorName
             this.selectedarticle = article;
             this.setLoadingInitial(false);
             return article;
-        } 
-        else{
+        }
+        else {
             this.setLoadingInitial(true)
             try {
                 article = await agent.Articles.Details(id);
-                runInAction(() => {this.selectedarticle = article;})          
+                article.myFav = article.favoriteBy?.find(a => a.userName === store.accountstore.currentUser?.userName) !== undefined
+                runInAction(() => {
+                    this.selectedarticle = article;
+                })
                 this.setLoadingInitial(false)
                 return article;
             } catch (error) {
@@ -110,21 +116,21 @@ export default class ArticleStore {
 
 
     // get the selected article
-    SelectArticle = (id : string) => {
+    SelectArticle = (id: string) => {
         this.selectedarticle = this.articlesMap.get(id);
         this.setLoadingInitial(false);
     }
 
     // cancel select (set to undefine)
-    CancleSelectArticle = () =>{
+    CancleSelectArticle = () => {
         this.selectedarticle = undefined;
     }
 
     // Create article
-    CreateArticle = async (article : Article) => {
+    CreateArticle = async (article: Article) => {
         this.loading = true;
-        article.artID = uuid();
         article.createDate = new Date().toISOString();
+        article.authorName = store.accountstore.currentUser!.userName;
         agent.Articles.Create(article).then(
             action(("CreateSucess"), () => {
                 // ... spreading articles array into individual article,
@@ -137,7 +143,7 @@ export default class ArticleStore {
                 this.editMode = false;
                 this.loading = false;
             })
-            ,action(("CreateFailed"), Error => {
+            , action(("CreateFailed"), Error => {
                 this.selectedarticle = article
                 this.editMode = false;
                 this.loading = false;
@@ -164,7 +170,7 @@ export default class ArticleStore {
     //     )
     // }
 
-    EditArticle = async (article : Article) =>{
+    EditArticle = async (article: Article) => {
         this.loading = true;
         try {
             await agent.Articles.Update(article);
@@ -189,16 +195,47 @@ export default class ArticleStore {
         try {
             await agent.Articles.Delete(id);
             runInAction(() => {
+                this.articlesMap.delete(id);
                 if (this.selectedarticle?.artID === id) this.CancleSelectArticle();
-                this.articlesMap.delete(id);   
-                this.groupArticles();     
+                this.groupArticles();
                 this.loading = false;
+                store.modalstore.closeModal();
             })
         } catch (error) {
             runInAction(() => {
                 this.loading = false;
                 console.log(error);
             })
+        }
+    }
+
+    UpdateFav = async () => {
+        var user = store.accountstore.currentUser;
+        this.loading = true;
+        try {
+            await agent.Articles.EditFav(this.selectedarticle!.artID)
+            runInAction(() => {
+                if (this.selectedarticle?.myFav) {
+                    this.selectedarticle.favoriteBy = this.selectedarticle.favoriteBy?.filter(a => a.userName !== user?.userName)
+                    this.selectedarticle.myFav = false;
+                }
+                else {
+                    this.selectedarticle!.favoriteBy =
+                        this.selectedarticle!.favoriteBy?.concat({
+                            bio: "",
+                            displayName: user!.displayName,
+                            image: user?.image,
+                            userName: user!.userName
+                        })
+                    this.selectedarticle!.myFav = true;
+                }
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            this.loading = false;
+        } finally {
+
         }
     }
 }

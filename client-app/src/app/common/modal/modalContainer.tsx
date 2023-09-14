@@ -12,13 +12,13 @@ export default observer(function ModalContainer(){
                 <Modal.Content>
                     <Modal.Description>{modalstore.content}</Modal.Description>
                 </Modal.Content>
-                <Modal.Actions>
                 {modalstore.closeBtn &&
-                    <Button color='black' onClick={modalstore.closeModal}>
-                        Close
-                    </Button>
+                    <Modal.Actions>
+                        <Button color='black' onClick={modalstore.closeModal}>
+                            Close
+                        </Button>
+                    </Modal.Actions>
                 }
-                </Modal.Actions>
             </Modal>
         </>
     )

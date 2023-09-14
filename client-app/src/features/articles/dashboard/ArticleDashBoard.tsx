@@ -13,7 +13,7 @@ export default observer(function ArticleDashBoard(){
     const {List, articlesMap} = articlestore
 
     useEffect(() => {
-        if (articlesMap.size === 0) List();
+        if (articlesMap.size <= 1) List();
     }, [List])
   
     if (articlestore.loadinginitial) return <LoadingComp inverted={true} message={"Loading Articles..."}/>

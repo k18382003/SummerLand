@@ -8,7 +8,7 @@ namespace Application.Article
 {
     public class AddArticle
     {
-        public class Command: IRequest<Response<Unit>>
+        public class Command : IRequest<Response<Unit>>
         {
             public Articles Article { get; set; }
         }
@@ -21,10 +21,10 @@ namespace Application.Article
             }
         }
 
-        public class Handler: IRequestHandler<Command, Response<Unit>>
+        public class Handler : IRequestHandler<Command, Response<Unit>>
         {
             private readonly DataContext _Context;
-            public Handler(DataContext context) 
+            public Handler(DataContext context)
             {
                 _Context = context;
             }

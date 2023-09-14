@@ -1,6 +1,5 @@
 
 import {Divider, Grid, Header, Segment } from "semantic-ui-react";
-import ModalExampleModal from "./modals/recommand_1";
 
 export default function Education(){
 

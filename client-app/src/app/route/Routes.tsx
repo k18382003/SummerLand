@@ -8,54 +8,79 @@ import NotFound from "../../features/error/NotFound";
 import ServerError from "../../features/error/ServerError";
 import AboutMe from "../../features/aboutme/aboutme";
 import Login from "../../features/user/login";
+import ConfirmPage from "../../features/email/ConfirmPage";
+import RequestPage from "../../features/email/RequestPage";
+import ResendConfirm from "../../features/email/ResendConfirm";
+import ErrorPage from "../../features/email/ErrorPage";
+import ProfilePage from "../../features/profile/ProfilePage";
 
 export const routes: RouteObject[] = [
     {
-        path : '/',
-        element : <App />,
-        children : [
+        path: '/',
+        element: <App />,
+        children: [
             {
-                path : '/articles',
-                element : <ArticleDashBoard />
+                path: '/article',
+                element: <ArticleDashBoard />
             },
             {
-                path : '/articles/:id',
-                element : <ArticlesDetail />
+                path: '/article/:id',
+                element: <ArticlesDetail />
             },
             {
-                path : '/writearticle',
-                element : <ArticleForm key='create'/>
+                path: '/writearticle',
+                element: <ArticleForm key='create' />
             },
             {
-                path : '/manage/:id',
-                element : <ArticleForm key='manage' />
+                path: '/manage/:id',
+                element: <ArticleForm key='manage' />
             },
             {
-                path : '/error',
-                element : <TestErrors />
+                path: '/error',
+                element: <TestErrors />
             },
             {
-                path : '/not-found',
-                element : <NotFound />
+                path: '/not-found',
+                element: <NotFound />
             },
             {
-                path : '/server-error',
-                element : <ServerError />
+                path: '/server-error',
+                element: <ServerError />
             },
             {
-                path : '/about-me',
-                element : <AboutMe />
+                path: '/about-me',
+                element: <AboutMe />
             },
             {
-                path : '/login',
-                element : <Login />
+                path: '/login',
+                element: <Login />
             },
             {
-                path : '*',
-                element : <Navigate to='/not-found' />
+                path: '/confirm-email',
+                element: <ConfirmPage />
+            },
+            {
+                path: '/confirm-request',
+                element: <RequestPage />
+            },
+            {
+                path: '/resend-email',
+                element: <ResendConfirm />
+            },
+            {
+                path: '/failed-resend',
+                element: <ErrorPage />
+            },
+            {
+                path: '/profile/:username',
+                element: <ProfilePage />
+            },
+            {
+                path: '*',
+                element: <Navigate to='/not-found' />
             }
         ]
-        
+
     }
 ]
 

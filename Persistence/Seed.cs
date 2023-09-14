@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
+using Persistence.Migrations;
+using System.Runtime.CompilerServices;
 
 namespace Persistence
 {
@@ -11,43 +13,77 @@ namespace Persistence
             {
                 var users = new List<AppUser>()
                 {
-                    new AppUser(){displayName="Summer", UserName="summer", Email="summer@gmail.com" },
-                    new AppUser(){displayName="Alice", UserName="alice", Email="alice@gmail.com" },
-                    new AppUser(){displayName="Bob", UserName="bob", Email="bob@gmail.com" }
+                    new AppUser(){DisplayName="Summer", UserName="summer", Email="summer@gmail.com" },
+                    new AppUser(){DisplayName="Alice", UserName="alice", Email="alice@gmail.com" },
+                    new AppUser(){DisplayName="Bob", UserName="bob", Email="bob@gmail.com" }
                 };
 
-                foreach (var user in users) 
+                foreach (var user in users)
                 {
                     // Don't need to save change, CreateAsync will create and save at the same time
-                    await userManager.CreateAsync(user, "Passw0rd");
+                    await userManager.CreateAsync(user, "P@ssw0rd");
                 }
+
+                if (!context.Articles.Any())
+                {
+                    var articles = new List<Articles>()
+                    {
+                        new Articles()
+                        {
+                            Title = "First day of learning code!",
+                            CreateDate = DateTime.UtcNow.AddMonths(-3),
+                            Category = "Others",
+                            Content = "Hello welcome!",
+                            AuthorName = users[0].UserName,
+                            //AuthorPhoto = users[0].Photos.FirstOrDefault(x => x.IsMain).Url,
+                            FavoriteBy = new List<Domain.FavoriteArticles>
+                            {
+                                new Domain.FavoriteArticles { AppUser = users[0] }
+                            }
+                        },
+                        new Articles()
+                        {
+                            Title = "What should I choose ? VSCode or Visual Studio ?",
+                            CreateDate = DateTime.UtcNow.AddMonths(-1),
+                            Category = "Others",
+                            Content = "To be launched",
+                            AuthorName = users[1].UserName,
+                            FavoriteBy = new List<Domain.FavoriteArticles>
+                            {
+                                new Domain.FavoriteArticles { AppUser = users[1] }
+                            }
+                        },
+                        new Articles()
+                        {
+                            Title = "Is React better?",
+                            CreateDate = DateTime.UtcNow.AddMonths(-1),
+                            Category = "Others",
+                            Content = "To be launched",
+                            AuthorName = users[1].UserName,
+                            FavoriteBy = new List<Domain.FavoriteArticles>
+                            {
+                                new Domain.FavoriteArticles { AppUser = users[1] }
+                            }
+                        },
+                        new Articles()
+                        {
+                            Title = "How to land a IT job in Vancouver ?",
+                            CreateDate = DateTime.UtcNow.AddMonths(-2),
+                            Category = "Others",
+                            Content = "To be launched",
+                            AuthorName = users[2].UserName,
+                            FavoriteBy = new List<Domain.FavoriteArticles>
+                            {
+                                new Domain.FavoriteArticles { AppUser = users[2] }
+                            }
+                        }
+                    };
+
+                    await context.AddRangeAsync(articles);
+                    await context.SaveChangesAsync();
+                }
+
             }
-
-
-            // if we have creating some new data, then just return
-            if (context.Articles.Any()) return;
-
-            // if we don't, then we use these demo data
-            var articles = new List<Articles>()
-            {
-                new Articles()
-                {
-                    Title = "First day of learning code!",
-                    CreateDate = DateTime.UtcNow.AddMonths(-2),
-                    Category = "Others",
-                    Content = "Hello welcome!"
-                }
-                ,new Articles()
-                {
-                    Title = "What should I choose ? VSCode or Visual Studio ?",
-                    CreateDate = DateTime.UtcNow.AddMonths(-1),
-                    Category = "Others",
-                    Content = "To be launched"
-                }
-            };
-
-            await context.AddRangeAsync(articles);
-            await context.SaveChangesAsync();
         }
     }
 }

@@ -14,16 +14,16 @@ import ModalContainer from '../common/modal/modalContainer';
 
 function App() {
   const location = useLocation();
-  const {commondstore, accountstore} = useStore();
+  const {commonstore, accountstore} = useStore();
 
   useEffect(()=>{
-    if (commondstore.token)
-      accountstore.getCurrentUser().finally(() => commondstore.setAppLoaded());
+    if (commonstore.token)
+      accountstore.getCurrentUser().finally(() => commonstore.setAppLoaded());
     else
-      commondstore.setAppLoaded();
-  }, [commondstore, accountstore])
+      commonstore.setAppLoaded();
+  }, [commonstore, accountstore])
 
-  if (!commondstore.appLoaded) return <LoadingComp inverted message='App loading...' /> 
+  if (!commonstore.appLoaded) return <LoadingComp inverted message='App loading...' /> 
 
   return (
     //Need to have <> </> to let react know its fragment = <React.fragment>

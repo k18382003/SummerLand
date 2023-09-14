@@ -1,5 +1,9 @@
 ﻿using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -19,18 +23,24 @@ namespace Application.Article
         public class Handler: IRequestHandler<Command, Response<Unit>>
         {
             private readonly DataContext _Context;
+            private readonly IMapper _Mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IMapper mapper)
             {
                 _Context = context;
+                _Mapper = mapper;
             }
 
             public async Task<Response<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var article = await _Context.Articles.FindAsync(request.ArtID);
+                var article = await _Context.Articles
+                    .Include(f => f.FavoriteBy)
+                    .FirstOrDefaultAsync(a => a.ArtID == request.ArtID);
 
                 if (article == null) return null;
-
+             
+                var a = article.FavoriteBy.Count();
+                article.FavoriteBy.Clear();
                 _Context.Articles.Remove(article);
 
                 var response = await _Context.SaveChangesAsync();

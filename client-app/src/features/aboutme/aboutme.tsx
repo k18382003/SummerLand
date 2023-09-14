@@ -12,7 +12,7 @@ export default function AboutMe(){
             <Segment raised>
                 <Grid>
                     <Grid.Row>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={3} className='computer only row'>
                             <Image src={require('../../images/GreetingPhoto.png')} size='small' /> 
                         </Grid.Column>
                         <Grid.Column width={13}>

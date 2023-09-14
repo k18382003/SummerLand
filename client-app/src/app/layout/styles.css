@@ -308,3 +308,12 @@ body {
 .award_photo {
   display: block;
 }
+
+.favList {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.ui.comments {
+  max-width: 100%;
+}

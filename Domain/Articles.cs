@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
@@ -12,10 +6,18 @@ namespace Domain
     {
         [Key]
         public Guid ArtID { get; set; }
+
         public string Title { get; set; }
+
         public string Content { get; set; }
+
         public DateTime CreateDate { get; set; }
+
         public string Category { get; set; }
 
+        public string AuthorName { get; set; }
+
+        public ICollection<FavoriteArticles> FavoriteBy { get; set; } = new List<FavoriteArticles>();
+        public ICollection<Comments> Comments { get; set; } = new List<Comments>();
     }
 }

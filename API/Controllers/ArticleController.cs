@@ -1,16 +1,14 @@
-﻿using Application.Article;
+﻿
+using Application.Article;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
     public class ArticleController : BaseAPIController
     {
+
         [HttpGet] //end point : api/articles
         public async Task<IActionResult> Articles()
         {
@@ -31,6 +29,7 @@ namespace API.Controllers
         }
 
         // replacing existing value, we can use httpput
+        [Authorize(policy: "IsAuthor")]
         [HttpPut("{articleid}")]
         public async Task<IActionResult> EditArticles(Guid ArticleID, Articles article)
         {
@@ -39,10 +38,18 @@ namespace API.Controllers
             return ResponseHandler(await Mediator.Send(new EditAtricle.Command {ArtID = ArticleID, Article = article }));
         }
 
+        [Authorize(policy: "IsAuthor")]
         [HttpDelete("{articleid}")]
         public async Task<IActionResult> DeleteArticle(Guid ArticleID)
         {
             return ResponseHandler(await Mediator.Send(new DeleteArticle.Command { ArtID = ArticleID }));   
+        }
+
+        [HttpPut("{articleid}/fav")]
+        public async Task<IActionResult> EditFavorite(Guid ArticleID)
+        {
+            // Use Mediator to access application functions
+            return ResponseHandler(await Mediator.Send(new EditFavoriteArticles.Command { ArtID = ArticleID }));
         }
     }
 }

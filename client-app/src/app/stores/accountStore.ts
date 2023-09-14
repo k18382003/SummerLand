@@ -6,7 +6,7 @@ import { router } from "../route/Routes";
 
 
 export default class AccountStore {
-    currentUser : User | null = null;
+    currentUser: User | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -16,48 +16,59 @@ export default class AccountStore {
         return !!this.currentUser;
     }
 
-    login = async(cred:UserFormValue) => {
+    login = async (cred: UserFormValue) => {
         try {
             const user = await agent.Account.LogIn(cred);
-            store.commondstore.setToken(user.token);
+            if (user.emailConfirmed != true) {
+                store.modalstore.closeModal();
+                router.navigate('/confirm-request');
+                return;
+            }
+            store.commonstore.setToken(user.token);
             runInAction(() => this.currentUser = user);
             store.modalstore.closeModal();
-            router.navigate('/articles');
+            router.navigate('/article');
         }
-        catch(err) {
+        catch (err) {
             throw err;
         }
     }
 
-    logout = async() => {
+    logout = async () => {
         try {
-            store.commondstore.setToken(null);
-            runInAction(()=>{this.currentUser = null})
+            store.commonstore.setToken(null);
+            runInAction(() => { this.currentUser = null })
             router.navigate('/');
         } catch (error) {
             throw error;
         }
     }
 
-    Register = async(cred:UserFormValue) => {
+    Register = async (cred: UserFormValue) => {
         try {
-            const user = await agent.Account.Register(cred);
-            store.commondstore.setToken(user.token);
-            runInAction(() => this.currentUser = user);
+            await agent.Account.Register(cred);
+            // store.commondstore.setToken(user.token);
+            // runInAction(() => this.currentUser = user);
             store.modalstore.closeModal();
-            router.navigate('/articles');
+            router.navigate('/confirm-request');
         }
-        catch(err) {
+        catch (err) {
             throw err;
         }
     }
 
-    getCurrentUser = async() => {
+    getCurrentUser = async () => {
         try {
             var user = await agent.Account.CurrentUser();
             runInAction(() => this.currentUser = user);
-        } catch(err) {
+        } catch (err) {
             console.log(err);
+        }
+    }
+
+    setImage = (img: string) => {
+        if (this.currentUser) {
+            this.currentUser.image = img;
         }
     }
 }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{E5DA0F0C-1E0F-4CE2-ABBE-50A7C348DE3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrustructure", "Infrustructure\Infrustructure.csproj", "{DF6B8D9D-FA17-4252-B316-44624DBDBD94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E5DA0F0C-1E0F-4CE2-ABBE-50A7C348DE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5DA0F0C-1E0F-4CE2-ABBE-50A7C348DE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5DA0F0C-1E0F-4CE2-ABBE-50A7C348DE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF6B8D9D-FA17-4252-B316-44624DBDBD94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6B8D9D-FA17-4252-B316-44624DBDBD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF6B8D9D-FA17-4252-B316-44624DBDBD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF6B8D9D-FA17-4252-B316-44624DBDBD94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

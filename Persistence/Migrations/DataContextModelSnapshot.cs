@@ -15,7 +15,7 @@ namespace Persistence.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
@@ -93,6 +93,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AuthorName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Category")
                         .HasColumnType("TEXT");
 
@@ -108,6 +111,84 @@ namespace Persistence.Migrations
                     b.HasKey("ArtID");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Domain.Comments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("ArticleArtID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CommenterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleArtID");
+
+                    b.HasIndex("CommenterId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Domain.FavoriteArticles", b =>
+                {
+                    b.Property<Guid>("ArtID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ArtID", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("favorites");
+                });
+
+            modelBuilder.Entity("Domain.Followers", b =>
+                {
+                    b.Property<string>("FollowerID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FolloweeID")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FollowerID", "FolloweeID");
+
+                    b.HasIndex("FolloweeID");
+
+                    b.ToTable("Followers");
+                });
+
+            modelBuilder.Entity("Domain.Photos", b =>
+                {
+                    b.Property<string>("photoId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("photoId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -238,6 +319,67 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Comments", b =>
+                {
+                    b.HasOne("Domain.Articles", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleArtID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.AppUser", "Commenter")
+                        .WithMany()
+                        .HasForeignKey("CommenterId");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Commenter");
+                });
+
+            modelBuilder.Entity("Domain.FavoriteArticles", b =>
+                {
+                    b.HasOne("Domain.Articles", "Article")
+                        .WithMany("FavoriteBy")
+                        .HasForeignKey("ArtID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("FavoriteArticles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("Domain.Followers", b =>
+                {
+                    b.HasOne("Domain.AppUser", "Followee")
+                        .WithMany("Followers")
+                        .HasForeignKey("FolloweeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "Follower")
+                        .WithMany("Followees")
+                        .HasForeignKey("FollowerID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Followee");
+
+                    b.Navigation("Follower");
+                });
+
+            modelBuilder.Entity("Domain.Photos", b =>
+                {
+                    b.HasOne("Domain.AppUser", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("AppUserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -287,6 +429,24 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.AppUser", b =>
+                {
+                    b.Navigation("FavoriteArticles");
+
+                    b.Navigation("Followees");
+
+                    b.Navigation("Followers");
+
+                    b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("Domain.Articles", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("FavoriteBy");
                 });
 #pragma warning restore 612, 618
         }
