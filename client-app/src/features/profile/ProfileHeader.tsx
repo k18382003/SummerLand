@@ -1,18 +1,13 @@
-import { useState } from "react";
-import { Button, Divider, Grid, Header, Item, ItemGroup, Popup, Segment, Statistic } from "semantic-ui-react";
+import { Divider, Grid, Header, Item, ItemGroup, Segment, Statistic } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
 import { observer } from "mobx-react-lite";
+import FollowButton from "./FollowButton";
 
 interface Props {
     profileData: Profile;
 }
 
 export default observer(function ProfileHeader({ profileData }: Props) {
-    const [following, SetFollow] = useState(true);
-    const handleClick = () => {
-        SetFollow((pre) => !pre);
-    }
-
     return (
         <Segment>
             <Grid>
@@ -28,17 +23,14 @@ export default observer(function ProfileHeader({ profileData }: Props) {
                 </Grid.Column>
                 <Grid.Column floated='right' width={5}>
                     <Statistic.Group size='mini'>
-                        <Statistic horizontal label='Follower' value='5' color="red" />
+                        <Statistic horizontal label='Follower' value={profileData.followers} color="red" />
                         <Divider />
-                        <Statistic horizontal label='Following' value='100' color="teal" />
+                        <Statistic horizontal label='Following' value={profileData.followings} color="teal" />
                         <Divider />
-                        <Statistic horizontal label='Articles' value='3' color="blue" />
+                        <Statistic horizontal label='Articles' value={profileData.articles} color="blue" />
                     </Statistic.Group>
                     <Divider />
-                    <Popup content='Click to follow or unfollow' trigger={
-                        <Button fluid toggle active={following} onClick={handleClick}>
-                            {following ? 'Following' : 'Not Follow'}
-                        </Button>} />
+                    <FollowButton profile={profileData} />
                 </Grid.Column>
             </Grid>
         </Segment>

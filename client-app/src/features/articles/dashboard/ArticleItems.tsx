@@ -27,7 +27,7 @@ export default observer(function ArticleItems({ article }: Props) {
                     />
                     <br />
                     <Label>{article.category}</Label>
-                    <Button as={Link} to={`/articles/${article.artID}`} floated='right' content='View' color='black' size='tiny'></Button>
+                    <Button as={Link} to={`/article/${article.artID}`} floated='right' content='View' color='black' size='tiny'></Button>
                 </Item.Extra>
             </Item.Content>
         </Item>

@@ -5,5 +5,14 @@ export interface Profile {
     userName: string,
     image?: string,
     bio?: string,
-    photos?: Photos[]
+    photos?: Photos[],
+    followers?: number,
+    followings?: number,
+    articles?: number,
+    following?: boolean
+}
+
+export interface BioValue {
+    displayName: string,
+    bio: string
 }

@@ -25,7 +25,7 @@ export default observer(function ArticlesDetail() {
 
     async function handleUpdFav(artID: string) {
         await UpdateFav();
-        navigaete(`/articles/${artID}`);
+        navigaete(`/article/${artID}`);
     }
 
     useEffect(() => {
@@ -72,8 +72,8 @@ export default observer(function ArticlesDetail() {
                                     <List divided>
                                         {selectedarticle.favoriteBy?.map((profile) => (
                                             <List.Item key={profile.userName}>
-                                                <Label as='a' image horizontal>
-                                                    <img src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                                                <Label as={Link} to={`/profile/${profile.userName}`} image horizontal>
+                                                    <img src={profile.image || 'https://react.semantic-ui.com/images/avatar/small/joe.jpg'} />
                                                     {profile.userName}
                                                 </Label>
                                             </List.Item>
@@ -81,7 +81,7 @@ export default observer(function ArticlesDetail() {
                                     </List>
                                 </Popup>
                             }
-                            <Button floated='right' as={Link} to="/articles" color='black' content='Back to List'></Button>
+                            <Button floated='right' as={Link} to="/article" color='black' content='Back to List'></Button>
                             {accountstore.currentUser?.userName == selectedarticle.authorName &&
                                 <ButtonGroup floated='right'>
                                     <Button

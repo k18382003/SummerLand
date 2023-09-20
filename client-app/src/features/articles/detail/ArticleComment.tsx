@@ -1,6 +1,6 @@
-import React, { useEffect, } from 'react';
-import { Button, Comment, Divider, Grid, Header, Segment } from 'semantic-ui-react'
-import { useStore } from '../../../app/stores/store';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
+import { Button, Comment, Dimmer, Divider, Grid, Header, Loader, Segment } from 'semantic-ui-react'
+import { store, useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps } from 'formik';
@@ -13,20 +13,13 @@ interface Props {
 }
 
 export default observer(function ArticleComment({ artId }: Props) {
-    // const [reply, setReply] = useState(false);
-    // const [target, setTarget] = useState("");
+    const [target, setTarget] = useState("");
     const { commentstore } = useStore();
 
-    // function handleClick(event: SyntheticEvent<HTMLButtonElement>, comment: com) {
-    //     setTarget(event.currentTarget.name)
-    //     if (reply == false) {
-    //         setReply(true);
-    //     }
-    //     else
-    //     {
-    //         setReply(false);
-    //     }
-    // }
+    function handleClick(event: SyntheticEvent<HTMLButtonElement>, _comment: com) {
+        setTarget(event.currentTarget.name)
+        commentstore.delteComment(_comment);
+    }
 
     useEffect(() => {
         if (artId)
@@ -44,7 +37,7 @@ export default observer(function ArticleComment({ artId }: Props) {
                 <Segment attached='top' inverted textAlign='center'>
                     <Header content="Leave a comment" />
                 </Segment>
-                <Segment attached clearing>
+                <Segment attached clearing >
                     <Comment.Group >
                         {commentstore.comments.map((comment) => (
                             <Comment key={comment.id} style={{ maxWidth: "100% !important" }}>
@@ -54,17 +47,26 @@ export default observer(function ArticleComment({ artId }: Props) {
                                     <Comment.Metadata>
                                         <div>{moment(comment.createTime).format("MMM DD YYYY HH:mm:ss")}</div>
                                     </Comment.Metadata>
-                                    <Comment.Text>
+                                    <Comment.Text style={{ whiteSpace: 'break-spaces' }}>
                                         {comment.body}
                                     </Comment.Text>
                                     {/* <Comment.Actions>
                                         <Comment.Action
-                                            as={Link}
-                                            name={comment.userName + comment.id}
-                                            onClick={(e: any) => handleClick(e, comment)}
+                                        as={Link}
+                                        name={comment.userName + comment.id}
+                                        onClick={(e: any) => handleClick(e, comment)}
                                         >Reply</Comment.Action>
-                                    </Comment.Actions>
+                                        </Comment.Actions>
                                     {reply && target === comment.userName + comment.id && <ArticleCommentReply parentComment={comment} />} */}
+                                    {store.accountstore.currentUser?.userName === comment.userName &&
+                                        <Comment.Actions>
+                                            <Comment.Action
+                                                as={Link}
+                                                name={comment.userName + comment.id}
+                                                onClick={(e: any) => handleClick(e, comment)}
+                                            >Delete</Comment.Action>
+                                        </Comment.Actions>
+                                    }
                                 </Comment.Content>
                                 <Divider />
                             </Comment>
@@ -79,7 +81,7 @@ export default observer(function ArticleComment({ artId }: Props) {
                             body: yup.string().trim().required("Comment can't be empty")
                         })}
                     >
-                        {({ isSubmitting, isValid, dirty}) => (
+                        {({ isSubmitting, isValid, dirty }) => (
                             <>
                                 <Form className='ui form'>
                                     <Field name="body">

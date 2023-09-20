@@ -1,6 +1,6 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import MyTextField from "../../app/common/form/MyTextField";
-import { Button, Header, Label } from "semantic-ui-react";
+import { Button, Header, Input, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 export default function Login() {
@@ -11,7 +11,8 @@ export default function Login() {
             <Formik
                 initialValues={{ email: "", password: "", error: null }}
                 onSubmit={(value, { setErrors }) => accountstore.login(value).catch(err => {
-                    setErrors({ error: 'Invalid email or password' + err })
+                    setErrors({ error: 'Invalid email or password' })
+                    console.log(err);
                 })}
             >
                 {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (

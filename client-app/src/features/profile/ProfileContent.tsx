@@ -1,6 +1,10 @@
-import { Grid, Image, Segment, Tab } from "semantic-ui-react";
+import { Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
 import ProfilePhotos from "./ProfilePhotos";
+import ProfileFollow from "./ProfileFollowers";
+import { useStore } from "../../app/stores/store";
+import ProfileArticleList from "./ProfileArticleList";
+import ProfileAcout from "./ProfileAbout";
 
 
 interface Props {
@@ -8,22 +12,25 @@ interface Props {
 }
 
 export default function ProfileContent({ profileData }: Props) {
+
+    const { profilestore } = useStore();
+
     const panes = [
         {
             menuItem: 'About',
-            render: () => <Tab.Pane attached={false}>About Content</Tab.Pane>,
+            render: () => <ProfileAcout />,
         },
         {
             menuItem: 'Followers',
-            render: () => <Tab.Pane attached={false}>XXX</Tab.Pane>,
+            render: () => <ProfileFollow />,
         },
         {
             menuItem: 'Followings',
-            render: () => <Tab.Pane attached={false}>OOO</Tab.Pane>,
+            render: () => <ProfileFollow />
         },
         {
             menuItem: 'Articles',
-            render: () => <Tab.Pane attached={false}>1, 2, 3</Tab.Pane>,
+            render: () => <ProfileArticleList profile={profileData} />,
         },
         {
             menuItem: 'Photos',
@@ -32,6 +39,10 @@ export default function ProfileContent({ profileData }: Props) {
     ]
 
     return (
-        <Tab menu={{ fluid: true, secondary: true, pointing: true }} panes={panes} />
+        <Tab
+            menu={{ fluid: true, secondary: true, pointing: true }}
+            panes={panes}
+            onTabChange={(_, data) => profilestore.setActiveTab(data.activeIndex as number)}
+        />
     )
 }

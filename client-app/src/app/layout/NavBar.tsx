@@ -1,12 +1,14 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dropdown, Icon, Image, Segment } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 import Login from '../../features/user/login';
 import Register from '../../features/user/register';
+import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
+import { router } from '../route/Routes';
+
 
 export default observer(function NavBar() {
-
     const [isOpen, setIsopen] = useState(false);
     const { accountstore: { isLoggedIn, logout, currentUser }, modalstore } = useStore();
 
@@ -27,9 +29,10 @@ export default observer(function NavBar() {
                                 <a href="/about-me" className="item">
                                     About Summer
                                 </a>
-                                <a href="/error" className="item">
+                                {/* Only for development mode */}
+                                {/* <a href="/error" className="item">
                                     Error test
-                                </a>
+                                </a> */}
                                 {
                                     isLoggedIn ? (
                                         <>
@@ -43,7 +46,7 @@ export default observer(function NavBar() {
                                                 <Image src={currentUser?.image || require('../../images/user.png')} avatar style={{ top: 10, right: 10 }} />
                                                 <Dropdown item text={currentUser?.displayName} >
                                                     <Dropdown.Menu>
-                                                        <Dropdown.Item>My profile</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => router.navigate(`/profile/${currentUser?.userName}`)}>My profile</Dropdown.Item>
                                                         <Dropdown.Item onClick={logout} >Log out</Dropdown.Item>
                                                     </Dropdown.Menu>
                                                 </Dropdown>
@@ -86,9 +89,10 @@ export default observer(function NavBar() {
                         </a>
                     </li>
                     <li>
-                        <a href="/error" className="item">
-                            Error test
-                        </a>
+                        {/* Only for development mode */}
+                        {/* <a href="/error" className="item">
+                                    Error test
+                                </a> */}
                     </li>
                     {
                         isLoggedIn ?
@@ -108,7 +112,7 @@ export default observer(function NavBar() {
                                         <Image src={currentUser?.image || require('../../images/user.png')} avatar floated='left' />
                                         <Dropdown item text={currentUser?.displayName} fluid style={{ fontWeight: 'bold' }}>
                                             <Dropdown.Menu style={{ right: 0 }}>
-                                                <Dropdown.Item>My profile</Dropdown.Item>
+                                                <Dropdown.Item as={Link} to={`/profile/${currentUser?.userName}`}>My profile</Dropdown.Item>
                                                 <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>

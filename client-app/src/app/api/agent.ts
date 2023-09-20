@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { router } from "../route/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValue } from "../models/user";
-import { Profile } from "../models/profile";
+import { BioValue, Profile } from "../models/profile";
 import { PhotoUploadResult } from "../models/photos";
 
 
@@ -53,14 +53,20 @@ axiosInstance.interceptors.response.use(async res => {
                 throw modalStateError.flat();
             }
             else {
-                toast.error(data);
+                toast.error(data, {
+                    position: "top-center"
+                });
             }
             break;
         case 401:
-            toast.error('Unauthorized');
+            toast.error('Unauthorized', {
+                position: "top-center"
+            });
             break;
         case 403:
-            toast.error('forbidden');
+            toast.error('forbidden', {
+                position: "top-center"
+            });
             break;
         case 404:
             router.navigate('not-found');
@@ -102,7 +108,7 @@ const Account = {
 }
 
 const Email = {
-    resend: (email: string) => requests.post<string>('./email', {email})
+    resend: (email: string) => requests.post<string>('./email', { email })
 }
 
 const profile = {
@@ -111,11 +117,15 @@ const profile = {
         var formdata = new FormData();
         formdata.append('File', file);
         return axiosInstance.post<PhotoUploadResult>('photo', formdata, {
-            headers:{"Content-Type":"multipart/form"}
+            headers: { "Content-Type": "multipart/form" }
         })
     },
     setMain: (photoId: string) => requests.post(`photo/setmain/${photoId}`, {}),
-    deletePhoto: (photoId: string) => requests.del(`photo/${photoId}`)
+    deletePhoto: (photoId: string) => requests.del(`photo/${photoId}`),
+    UpdateFollowing: (username: string) => requests.post(`follow/${username}`, {}),
+    listFollowing: (username: string, type: string) => requests.get<Profile[]>(`follow/${username}?type=${type}`),
+    listArticles: (username: string) => requests.get<Article[]>(`profile/article/${username}`),
+    editBio: (value: BioValue) => requests.post(`profile/about/`, value)
 }
 
 // using agent avariable

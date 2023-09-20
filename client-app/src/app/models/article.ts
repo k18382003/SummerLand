@@ -1,5 +1,4 @@
 import { Profile } from "./profile"
-import { User } from "./user"
 
 export interface Article {
     artID: string

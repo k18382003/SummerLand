@@ -2,15 +2,18 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signal
 import { makeAutoObservable, runInAction } from "mobx";
 import { store } from "./store";
 import { Comment } from "../models/comment";
+import { toast } from "react-toastify";
 
 export default class CommentStore {
     comments: Comment[] = [];
     hubConnection: HubConnection | null = null;
+    deletedId: number | undefined;
+    deletedIndex: number | undefined;
 
     constructor() {
         makeAutoObservable(this);
     }
-    
+
 
 
     createHubConnection = (ArtId: string) => {
@@ -36,6 +39,13 @@ export default class CommentStore {
                     this.comments.push(comment);
                 })
             })
+
+            this.hubConnection.on('RemoveComment', (comment: Comment) => {
+                runInAction(() => {
+                    this.comments = this.comments.filter(x => x.id !== comment.id);
+                    toast.info(comment.displayName + " has deleted her comment of this article.")
+                })
+            })
         }
     }
 
@@ -47,6 +57,7 @@ export default class CommentStore {
 
     clearComments = () => {
         this.comments = [];
+        this.deletedId = undefined;
         this.stopHubConnection();
     }
 
@@ -54,6 +65,15 @@ export default class CommentStore {
         values.artId = store.articlestore.selectedarticle?.artID;
         try {
             await this.hubConnection?.invoke("SendComment", values);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    delteComment = async (values: any) => {
+        values.artId = store.articlestore.selectedarticle?.artID;
+        try {
+            await this.hubConnection?.invoke("DeleteComment", values);
         } catch (error) {
             console.log(error)
         }

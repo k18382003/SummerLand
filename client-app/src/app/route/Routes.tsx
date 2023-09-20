@@ -73,7 +73,8 @@ export const routes: RouteObject[] = [
             },
             {
                 path: '/profile/:username',
-                element: <ProfilePage />
+                element: <ProfilePage />,
+                               
             },
             {
                 path: '*',

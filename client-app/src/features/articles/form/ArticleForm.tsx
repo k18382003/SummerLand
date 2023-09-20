@@ -71,7 +71,7 @@ export default observer(function ArticleForm() {
         {({ handleSubmit }) => (
           <Segment clearing>
             <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-              <MyTextField label='Article Title' name='title' placeholder='Title' rows={1} />
+              <MyTextField label='Article Title' name='title' placeholder='Title' />
               <MyEditorField label='Artilce Content' name='content' placeholder={'content'} />
               <MyDropDownField label='Article Category' name='category' placeholder="Category" option={CategoryOption} />
               <Button as={Link} to="/article" floated='right' color='grey' content='Cancel' />
