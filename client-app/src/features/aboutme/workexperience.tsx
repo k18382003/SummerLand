@@ -1,5 +1,5 @@
 import { Checkbox, Divider, Grid, Header, List, Segment } from "semantic-ui-react";
-import React, {CSSProperties, useEffect, useState}  from 'react';
+import {CSSProperties, useState}  from 'react';
 
 interface MyCustomCSS extends CSSProperties  {
     '--accent-color': string;

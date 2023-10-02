@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Card, Container, Divider, Header, Icon, Image, Modal, Segment, Button } from "semantic-ui-react";
+import { Card, Container, Divider, Header, Image, Segment, Button } from "semantic-ui-react";
 import Recommand_1 from "./modals/recommand_1";
 import Recommand_2 from "./modals/recommand_2";
 import { observer } from "mobx-react-lite";

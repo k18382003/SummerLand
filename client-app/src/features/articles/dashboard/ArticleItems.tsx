@@ -1,5 +1,5 @@
 import { Article } from '../../../app/models/article';
-import { Button, Image, Item, Label, Popup } from 'semantic-ui-react';
+import { Button, Item, Label, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -20,7 +20,8 @@ export default observer(function ArticleItems({ article }: Props) {
                         content="Click to check author's profile"
                         key={article.artID}
                         header={article.authorName[0].toUpperCase().concat(article.authorName.slice(1))}
-                        trigger={<a href={`/profile/${article.authorName}`}><img style={{ width: '70px', height: '70px', borderRadius: '50%' }} src={article.authorPhoto || 'https://react.semantic-ui.com/images/avatar/large/joe.jpg'} /></a>}
+                        trigger={<a href={`/profile/${article.authorName}`}><img style={{ width: '70px', height: '70px', borderRadius: '50%' }}
+                            src={article.authorPhoto || 'https://react.semantic-ui.com/images/avatar/large/joe.jpg'} /></a>}
                         position='right center'
                         size='mini'
                         inverted

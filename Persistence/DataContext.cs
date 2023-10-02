@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Persistence
 {
@@ -26,20 +24,22 @@ namespace Persistence
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Followers>(x => x.HasKey(f => new { f.FollowerID, f.FolloweeID }));
             builder.Entity<FavoriteArticles>(x => x.HasKey(f => new { f.ArtID, f.UserId }));
-            
-            builder.Entity<Followers>()
-                .HasOne(x => x.Follower)
-                .WithMany(x => x.Followees)
-                .HasForeignKey(x => x.FollowerID)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Followers>()
-                .HasOne(x => x.Followee)
-                .WithMany(x => x.Followers)
-                .HasForeignKey(x => x.FolloweeID)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Followers>(x => 
+                { x.HasKey(f => new { f.FollowerID, f.FolloweeID }); 
+            
+                x.HasOne(f => f.Follower)
+                    .WithMany(f => f.Followees)
+                    .HasForeignKey(f => f.FollowerID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                x.HasOne(f => f.Followee)
+                    .WithMany(f => f.Followers)
+                    .HasForeignKey(f => f.FolloweeID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                });
 
             builder.Entity<FavoriteArticles>()
                 .HasOne(x => x.Article)

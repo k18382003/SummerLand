@@ -1,4 +1,5 @@
 import { Divider, Grid, GridColumn, GridRow, Header, Image, List, ListItem, Segment } from "semantic-ui-react";
+import AwardCombine from '../../images/AwardCombine.png';
 
 export default function Award(){
     return(
@@ -26,7 +27,7 @@ export default function Award(){
                             </List>
                         </GridColumn>
                         <GridColumn width={6}>
-                            <Image src={require('../../images/AwardCombine.png')} size='large' />
+                            <Image src={AwardCombine} size='large' />
                         </GridColumn>
                     </GridRow>
                     <GridRow className='mobile only row' columns={1}>
@@ -48,7 +49,7 @@ export default function Award(){
                             </List>
                         </GridColumn>
                         <GridColumn>
-                            <Image src={require('../../images/AwardCombine.png')} size='large' />
+                            <Image src={AwardCombine} size='large' />
                         </GridColumn>
                     </GridRow>
                 </Grid>

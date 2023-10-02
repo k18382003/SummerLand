@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import  { useCallback} from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Header, Icon } from 'semantic-ui-react';
-import { Url } from 'url';
+
 
 interface Props {
     setFile : (File:any) => void;

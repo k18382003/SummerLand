@@ -4,8 +4,8 @@ import { Button, Header } from "semantic-ui-react";
 export default function RequestPage() {
     return (
         <>
-            <Header>We have sent you an email. Please confirm your email before login.</Header>
-            <Header.Content>If you don't receive it. Please click button below. We will re-sent it to you.</Header.Content>
+            <Header textAlign="center">We have sent you an email. Please confirm your email before login.</Header>
+            <Header.Content textAlign="center">If you don't receive it. Please click button below. We will re-sent it to you.</Header.Content>
             <br />
             <Button
                 as={Link}

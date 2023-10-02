@@ -1,7 +1,7 @@
 import { Header, Item, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import ArticleItems from './ArticleItems';
-import { Fragment, useEffect } from 'react';
+import { Fragment} from 'react';
 
 
 export default function ArticleList(){

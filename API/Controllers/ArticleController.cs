@@ -1,5 +1,6 @@
 ﻿
 using Application.Article;
+using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ namespace API.Controllers
     {
 
         [HttpGet] //end point : api/articles
-        public async Task<IActionResult> Articles()
+        public async Task<IActionResult> Articles([FromQuery] ArticleParams param)
         {
             // Use Mediator to access application functions
-            return ResponseHandler(await Mediator.Send(new ArticleList.Query()));
+            return ResponsePageHeaderHandler(await Mediator.Send(new ArticleList.Query { param = param }));
         }
 
         [HttpGet("{articleid}")] //end point : api/articles/articleid

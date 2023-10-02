@@ -1,8 +1,9 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
+import { action, makeAutoObservable, reaction, runInAction } from "mobx";
 import { Article } from "../models/article";
 import agent from "../api/agent";
 import moment from "moment";
 import { store } from "./store";
+import { PageParams, Pagination } from "../models/pagination";
 
 export default class ArticleStore {
     articlesMap = new Map<string, Article>();
@@ -10,14 +11,64 @@ export default class ArticleStore {
     editMode: boolean = false
     loading: boolean = false
     loadinginitial: boolean = false;
+    pagination: Pagination | null = null;
+    pageParams = new PageParams();
+    preditcate = new Map().set('all', true);
 
     constructor() {
         makeAutoObservable(this)
+
+        reaction(
+            () => this.preditcate.keys(),
+            () => {
+                this.pageParams = new PageParams();
+                this.articlesMap.clear();
+                this.List();
+            })
     }
 
     get articleByDate() {
         return Array.from(this.articlesMap.values()).sort((a, b) =>
             Date.parse(a.createDate) - Date.parse(b.createDate))
+    }
+
+    setPredicate = (predicate: string, active: any) => {
+        switch (predicate) {
+            case "all":
+                this.preditcate.clear();
+                this.preditcate.set('all', active);
+                break;
+            case "myfavorites":
+                this.preditcate.clear();
+                this.preditcate.set('myfavorites', active);
+                break;
+            case "myarticles":
+                this.preditcate.clear();
+                this.preditcate.set('myarticles', active);
+                break;
+            case "topfive":
+                this.preditcate.clear();
+                this.preditcate.set('topfive', active);
+                break;
+            case "searchkeywords":
+                this.preditcate.clear();
+                this.preditcate.set('searchkeywords', active);
+                break;
+        }
+    }
+
+    setPageParams = (pageParam: PageParams) => {
+        this.pageParams = pageParam;
+    }
+
+    get axioParams() {
+        const params = new URLSearchParams();
+        params.append("pageNumber", this.pageParams.pageNumber.toString());
+        params.append("pageSize", this.pageParams.pageSize.toString());
+        this.preditcate.forEach((value, key) => {
+            params.append(key, value.toString());
+        })
+        return params;
     }
 
     groupArticles = () => {
@@ -38,18 +89,24 @@ export default class ArticleStore {
     List = async () => {
         this.setLoadingInitial(true);
         try {
-            var articles = await agent.Articles.List();
-            articles.forEach((item) => {
+            var result = await agent.Articles.List(this.axioParams);
+            result.data.forEach((item) => {
                 item.myFav = item.favoriteBy?.findIndex(a => a.userName === store.accountstore.currentUser?.userName) != -1
                 item.isauthor = store.accountstore.currentUser?.userName == item.authorName
                 this.articlesMap.set(item.artID, item);
-                this.setLoadingInitial(false)
             })
+            this.setPagination(result.pagination);
+            this.setLoadingInitial(false)
         } catch (error) {
             this.setLoadingInitial(false)
             console.log(error)
         }
     }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
+    }
+
     //#region Alternatives   
     // instead of generate a function, we can do like following as the instruction from the MobX doc    
     // https://mobx.js.org/actions.html

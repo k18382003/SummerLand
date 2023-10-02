@@ -1,19 +1,33 @@
+import { useState } from 'react';
 import { ErrorMessage, Form, Formik } from "formik";
 import MyTextField from "../../app/common/form/MyTextField";
-import { Button, Header, Input, Label } from "semantic-ui-react";
+import { Button, Divider, Header, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 export default function Login() {
     const { accountstore } = useStore()
+    const [guest, setGuest] = useState(false);
+
+
     return (
         <>
             <Header as={"h2"} textAlign="center">Log In to SummerLand</Header>
             <Formik
                 initialValues={{ email: "", password: "", error: null }}
-                onSubmit={(value, { setErrors }) => accountstore.login(value).catch(err => {
-                    setErrors({ error: 'Invalid email or password' })
-                    console.log(err);
-                })}
+                onSubmit={async (value, { setErrors }) => {
+                    if (guest) {
+                        await accountstore.login({ email: 'example@example.com', password: 'P@ssw0rd' }).catch(err => {
+                            setErrors({ error: err })
+                            console.log(err);
+                        })
+                    } else {
+                        await accountstore.login(value).catch(err => {
+                            setErrors({ error: 'Invalid email or password' })
+                            console.log(err);
+                        })
+                    }
+                }
+                }
             >
                 {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
                     <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
@@ -25,10 +39,20 @@ export default function Login() {
                         />
                         <Button
                             disabled={!isValid || !dirty || isSubmitting}
-                            loading={isSubmitting}
+                            loading={!guest && isSubmitting}
                             color='black'
                             type='submit'
                             content='Log In'
+                            fluid />
+                        <Divider />
+                        <Button
+                            disabled={isSubmitting}
+                            loading={guest && isSubmitting}
+                            name="guest"
+                            color='black'
+                            type='submit'
+                            content='Visit as Guest'
+                            onClick={() => setGuest(true)}
                             fluid />
                     </Form>
                 )}

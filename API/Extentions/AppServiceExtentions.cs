@@ -23,7 +23,21 @@ namespace API.Extentions
 
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                var conntr = "";
+
+                if (env == "Development")
+                {
+                    conntr = config.GetConnectionString("DefaultConnection");
+                }
+                else
+                {
+                    // Use the connection string that provide at the runtime by Azure
+                    conntr = Environment.GetEnvironmentVariable("AZURE_POSTGRESQL_CONNECTIONSTRING");
+                }
+
+                opt.UseNpgsql(conntr);
+
             });
 
             // Changing CORS policies, in order to let our web service to recieve data

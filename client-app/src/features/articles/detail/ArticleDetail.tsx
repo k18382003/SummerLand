@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button, ButtonGroup, Divider, Header, Icon, Item, ItemContent, Label, List, Popup, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import LoadingComp from '../../../app/layout/Loading';

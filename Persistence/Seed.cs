@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
-using Persistence.Migrations;
 using System.Runtime.CompilerServices;
 
 namespace Persistence

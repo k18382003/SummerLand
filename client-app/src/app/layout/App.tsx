@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './styles.css'
 import './timeline.css'
-import { Container, Loader } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import "react-quill/dist/quill.core.css";
 import { observer } from 'mobx-react-lite';

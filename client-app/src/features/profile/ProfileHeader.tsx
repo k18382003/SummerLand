@@ -2,6 +2,7 @@ import { Divider, Grid, Header, Item, ItemGroup, Segment, Statistic } from "sema
 import { Profile } from "../../app/models/profile";
 import { observer } from "mobx-react-lite";
 import FollowButton from "./FollowButton";
+import user from '../../images/user.png';
 
 interface Props {
     profileData: Profile;
@@ -14,7 +15,7 @@ export default observer(function ProfileHeader({ profileData }: Props) {
                 <Grid.Column floated='left' width={5}>
                     <ItemGroup>
                         <Item>
-                            <Item.Image avatar size="small" src={profileData.image || require('../../images/user.png')} />
+                            <Item.Image avatar size="small" src={profileData.image || user} />
                             <Item.Content verticalAlign="middle">
                                 <Header as='h1'>{profileData.displayName}</Header>
                             </Item.Content>

@@ -6,6 +6,7 @@ import { store } from "../stores/store";
 import { User, UserFormValue } from "../models/user";
 import { BioValue, Profile } from "../models/profile";
 import { PhotoUploadResult } from "../models/photos";
+import { PaginatedResult } from "../models/pagination";
 
 
 
@@ -20,7 +21,8 @@ const sleep = (delay: number) => {
 // set root url
 // axios.defaults.baseURL = 'http://localhost:5000/api/';
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/api/',
+    baseURL: import.meta.env.VITE_API_URL,
+    // baseURL: 'http://localhost:5000/api/',
 })
 
 axiosInstance.interceptors.request.use(config => {
@@ -32,7 +34,12 @@ axiosInstance.interceptors.request.use(config => {
 })
 
 axiosInstance.interceptors.response.use(async res => {
-    await sleep(1000);
+    if (import.meta.env.DEV)  await sleep(1000);
+    const pagination = res.headers["pagination"];
+    if (pagination) {
+        res.data = new PaginatedResult(res.data, JSON.parse(pagination))
+        return res as AxiosResponse<PaginatedResult<any>>;
+    }
     return res;
 }, (error: AxiosError) => {
     const { data, status, config } = error.response as AxiosResponse;
@@ -92,7 +99,9 @@ const requests = {
 
 // declare function
 const Articles = {
-    List: () => requests.get<Article[]>(`./article`),
+    List: (params: URLSearchParams) => axiosInstance.get<PaginatedResult<Article[]>>(`./article`, { params }).then(
+        resBody
+    ),
     // for the routing
     Details: (id: string) => requests.get<Article>(`./article/${id}`),
     Create: (article: Article) => requests.post<void>(`./article`, article),

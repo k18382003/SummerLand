@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { Button, Comment, Form } from 'semantic-ui-react'
 import { Comment as Com } from '../../../app/models/comment';
 
@@ -7,7 +7,7 @@ interface Props {
 }
 
 
-export default function ArticleCommentReply({ parentComment } : Props) {
+export default function ArticleCommentReply({ } : Props) {
 
     const [target, setTarget] = useState("");
 

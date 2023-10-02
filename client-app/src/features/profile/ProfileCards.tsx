@@ -1,4 +1,4 @@
-import { Button, Card, Image } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
 import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";

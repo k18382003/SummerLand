@@ -19,7 +19,7 @@ export default class CommentStore {
     createHubConnection = (ArtId: string) => {
         if (store.articlestore.selectedarticle) {
             this.hubConnection = new HubConnectionBuilder()
-                .withUrl("http://localhost:5000/chat?artId=" + ArtId, {
+                .withUrl(import.meta.env.VITE_CHAT_URL + "?artId=" + ArtId, {
                     accessTokenFactory: () => store.accountstore.currentUser?.token as string
                 })
                 .withAutomaticReconnect()

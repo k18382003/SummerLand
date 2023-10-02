@@ -311,3 +311,7 @@ body {
   background-repeat: no-repeat !important;
   height: 150px;
 }
+
+.ui.basic.button.tertiary {
+  box-shadow: none !important;
+}

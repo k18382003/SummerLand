@@ -45,12 +45,12 @@ export default observer(function ProfilePhotos({ profileData }: Props) {
                     {addPhotoMode ? (
                         <UploadPhotoWidget handleUpload={handleUpload} uploading={uploadingPhoto} />
                     ) :
-                        <Card.Group itemsPerRow={5}>
+                        <Card.Group stackable itemsPerRow={5}>
                             {profileData.photos?.map(photo => {
                                 return (
                                     <>
                                         <Card key={photo.photoId}>
-                                            <Image src={photo.url} />
+                                            <Image src={photo.url}  />
                                             <Button.Group fluid widths={2}>
                                                 <Button
                                                     basic

@@ -1,6 +1,6 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import MyTextField from "../../app/common/form/MyTextField";
-import { Button, Header, Label, List, Segment } from "semantic-ui-react";
+import { Button, Header, List, Segment } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import * as yup from "yup"
 import ValidationError from "../error/ValidationError";

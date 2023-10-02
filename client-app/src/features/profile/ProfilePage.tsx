@@ -6,10 +6,11 @@ import { useEffect } from "react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import LoadingComp from "../../app/layout/Loading";
+import GuestMessage from "../../app/common/authorization/guestMessage";
 
 export default observer(function ProfilePage() {
     const { username } = useParams();
-    const { profilestore } = useStore();
+    const { profilestore, accountstore } = useStore();
 
     useEffect(() => {
         profilestore.loading = true;
@@ -19,18 +20,24 @@ export default observer(function ProfilePage() {
             profilestore.loading = false;
             profilestore.acvtiveTab = 0;
         })
-    }, [username]);
+    }, [username, profilestore]);
 
     if (profilestore.loading) return <LoadingComp inverted={true} message={"Loading Profile..."} />
 
     return (
-        <Segment>
-            {profilestore.profileData &&
-                <>
-                    <ProfileHeader profileData={profilestore.profileData} />
-                    <ProfileContent profileData={profilestore.profileData} />
-                </>
+        <>
+            {accountstore.currentUser && accountstore.currentUser.userName == "guest" && username == "guest" ?
+                <GuestMessage functionName="creat profile" />
+                :
+                <Segment>
+                    {profilestore.profileData &&
+                        <>
+                            <ProfileHeader profileData={profilestore.profileData} />
+                            <ProfileContent profileData={profilestore.profileData} />
+                        </>
+                    }
+                </Segment>
             }
-        </Segment>
+        </>
     )
 })

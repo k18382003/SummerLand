@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Dropdown, Icon, Image, Segment } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 import Login from '../../features/user/login';
 import Register from '../../features/user/register';
-import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { router } from '../route/Routes';
+import userImage from '../../images/user.png'
 
 
 export default observer(function NavBar() {
@@ -43,7 +44,7 @@ export default observer(function NavBar() {
                                                 Write Article
                                             </a>
                                             <div className="right menu">
-                                                <Image src={currentUser?.image || require('../../images/user.png')} avatar style={{ top: 10, right: 10 }} />
+                                                <Image src={currentUser?.image || userImage} avatar style={{ top: 10, right: 10 }} />
                                                 <Dropdown item text={currentUser?.displayName} >
                                                     <Dropdown.Menu>
                                                         <Dropdown.Item onClick={() => router.navigate(`/profile/${currentUser?.userName}`)}>My profile</Dropdown.Item>
@@ -109,7 +110,7 @@ export default observer(function NavBar() {
                                         </a>
                                     </li>
                                     <Segment>
-                                        <Image src={currentUser?.image || require('../../images/user.png')} avatar floated='left' />
+                                        <Image src={currentUser?.image || '../../images/user.png'} avatar floated='left' />
                                         <Dropdown item text={currentUser?.displayName} fluid style={{ fontWeight: 'bold' }}>
                                             <Dropdown.Menu style={{ right: 0 }}>
                                                 <Dropdown.Item as={Link} to={`/profile/${currentUser?.userName}`}>My profile</Dropdown.Item>

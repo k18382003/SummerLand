@@ -1,5 +1,5 @@
-﻿using Application.Core;
-using Domain;
+﻿using API.Extentions;
+using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,5 +36,24 @@ namespace API.Controllers
                 return BadRequest(response.ErrorMsg);
         }
 
+        /// <summary>
+        /// Handle the HTTP request result
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        protected ActionResult ResponsePageHeaderHandler<T>(Response<PagedList<T>> response)
+        {
+            if (response == null) return NotFound();
+            if (response.IsSuccess && response.Value != null)
+            {
+                Response.AddPaginationHeader(response.Value.CurrentPage, response.Value.TotalPage
+                    ,response.Value.PageSize, response.Value.TotalCount);
+                return Ok(response.Value);
+            }
+            else if (response.IsSuccess && response.Value == null)
+                return NotFound();
+            else
+                return BadRequest(response.ErrorMsg);
+        }
     }
 }

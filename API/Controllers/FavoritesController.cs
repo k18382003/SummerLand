@@ -8,14 +8,6 @@ namespace API.Controllers
 {
     public class FavoritesController : BaseAPIController
     {
-        private readonly IHttpContextAccessor _HttpContextAccessor;
-
-        public FavoritesController(IHttpContextAccessor httpContextAccessor)
-        {
-            _HttpContextAccessor = httpContextAccessor;
-        }
-
-
         [HttpGet("{articleid}")]
         public async Task<IActionResult> Favorites(Guid ArticleID)
         {
@@ -24,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{articleid}")]
-        public async Task<IActionResult> EditFavorite(Guid ArticleID, ILogger<FavoritesController> logger)
+        public async Task<IActionResult> EditFavorite(Guid ArticleID)
         {          
             // Use Mediator to access application functions
             return ResponseHandler(await Mediator.Send(new EditFavoriteArticles.Command { ArtID = ArticleID }));

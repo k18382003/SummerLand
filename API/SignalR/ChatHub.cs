@@ -1,5 +1,4 @@
 ﻿using Application.Comments;
-using Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
@@ -8,12 +7,12 @@ namespace API.SignalR
     public class ChatHub : Hub
     {
         private readonly IMediator _Mediator;
-
+        
         public ChatHub(IMediator mediator)
         {
             _Mediator = mediator;
         }
-
+        
         public async Task SendComment(Create.Command command)
         {
             var comment = await _Mediator.Send(command);
@@ -21,6 +20,15 @@ namespace API.SignalR
             // Send the comment to every person who is connected to the Hub
             await Clients.Group(command.ArtId.ToString())
                 .SendAsync("ReceiveComment", comment.Value);
+        }
+
+        public async Task DeleteComment(Delete.Command command)
+        {
+            var comment = await _Mediator.Send(command);
+            
+            // Send the comment to every person who is connected to the Hub
+            await Clients.Group(command.ArtId.ToString())
+                .SendAsync("RemoveComment", comment.Value);
         }
 
         // When a client connect to the Hub, we want them to join a group

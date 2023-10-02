@@ -39,8 +39,8 @@ export default function ProfileContent({ profileData }: Props) {
     ]
 
     return (
-        <Tab
-            menu={{ fluid: true, secondary: true, pointing: true }}
+        <Tab            
+            menu={{ fluid: true, secondary: true, pointing: true, stackable:true}}
             panes={panes}
             onTabChange={(_, data) => profilestore.setActiveTab(data.activeIndex as number)}
         />

@@ -1,4 +1,7 @@
 import { Card, Divider, Header, Image, List, Segment } from 'semantic-ui-react';
+import language from '../../images/language.png';
+import framework from '../../images/framework.png';
+import IDE from '../../images/IDE.png';
 
 export default function Skills(){
     return(
@@ -8,7 +11,7 @@ export default function Skills(){
             <Card.Group centered>
                 <Card>
                     <Card.Content>
-                        <Image floated='left' src={require('../../images/language.png')} avatar></Image>
+                        <Image floated='left' src={language} avatar></Image>
                         <Card.Header>Programming Languages</Card.Header>
                         <br/>
                         <Card.Description>
@@ -27,7 +30,7 @@ export default function Skills(){
 
                 <Card>
                     <Card.Content>
-                        <Image floated='left' src={require('../../images/framework.png')} avatar></Image>
+                        <Image floated='left' src={framework} avatar></Image>
                         <Card.Header>Frameworks and Libraries</Card.Header>
                         <br/>
                         <Card.Description>
@@ -42,7 +45,7 @@ export default function Skills(){
 
                 <Card>
                     <Card.Content>
-                        <Image floated='left' src={require('../../images/IDE.png')} avatar></Image>
+                        <Image floated='left' src={IDE} avatar></Image>
                         <Card.Header>IDE & Source Control</Card.Header>
                         <br/>
                         <Card.Description>
