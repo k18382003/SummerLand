@@ -32,7 +32,7 @@ namespace API.Controllers
             var result = await _UserManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
-                return Redirect("http://localhost:3000/confirm-email");
+                return Redirect($"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}/confirm-email");
             else
                 return BadRequest();
         }

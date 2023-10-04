@@ -14,11 +14,14 @@ namespace Persistence
                 {
                     new AppUser(){DisplayName="Summer", UserName="summer", Email="summer@gmail.com" },
                     new AppUser(){DisplayName="Alice", UserName="alice", Email="alice@gmail.com" },
-                    new AppUser(){DisplayName="Bob", UserName="bob", Email="bob@gmail.com" }
+                    new AppUser(){DisplayName="Bob", UserName="bob", Email="bob@gmail.com" },
+                    new AppUser(){DisplayName="Guest", UserName="guest", Email="example@example.com" }
                 };
 
                 foreach (var user in users)
                 {
+                    if (user.UserName == "guest")
+                       user.EmailConfirmed = true;
                     // Don't need to save change, CreateAsync will create and save at the same time
                     await userManager.CreateAsync(user, "P@ssw0rd");
                 }

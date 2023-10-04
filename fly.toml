@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for summertechland on 2023-10-03T15:49:44-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "summertechland"
+primary_region = "sea"
+
+[build]
+  image = "summertechdocker/summertechland:latest"
+
+[env]
+  ASPNETCORE_URLS = "http://+:8080"
+  AzureBlobStorage_AccountName = "summerblogimages"
+  
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
