@@ -11,8 +11,8 @@ export default class EmailStore {
         try {
             const result = await agent.Email.resend(email)
             if (!result)
-                router.navigate('./failed-resend')
-            router.navigate('./confirm-request')
+                router.navigate('./failed-resend', { replace: true })
+            router.navigate('./confirm-request', { replace: true })
         }
         catch (err) {
             throw err;
