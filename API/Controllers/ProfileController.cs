@@ -1,7 +1,6 @@
 ﻿using API.DTOs;
 using Application.Follower;
 using Application.Profiles;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

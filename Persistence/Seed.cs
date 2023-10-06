@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
-using System.Runtime.CompilerServices;
 
 namespace Persistence
 {
@@ -12,7 +11,6 @@ namespace Persistence
             {
                 var users = new List<AppUser>()
                 {
-                    new AppUser(){DisplayName="Summer", UserName="summer", Email="summer@gmail.com" },
                     new AppUser(){DisplayName="Alice", UserName="alice", Email="alice@gmail.com" },
                     new AppUser(){DisplayName="Bob", UserName="bob", Email="bob@gmail.com" },
                     new AppUser(){DisplayName="Guest", UserName="guest", Email="example@example.com" }
@@ -20,8 +18,7 @@ namespace Persistence
 
                 foreach (var user in users)
                 {
-                    if (user.UserName == "guest")
-                       user.EmailConfirmed = true;
+                    user.EmailConfirmed = true;
                     // Don't need to save change, CreateAsync will create and save at the same time
                     await userManager.CreateAsync(user, "P@ssw0rd");
                 }
@@ -32,10 +29,10 @@ namespace Persistence
                     {
                         new Articles()
                         {
-                            Title = "First day of learning code!",
+                            Title = "First day of learning code!(Dummy article 1)",
                             CreateDate = DateTime.UtcNow.AddMonths(-3),
                             Category = "Others",
-                            Content = "Hello welcome!",
+                            Content = "Hello welcome! Enjoy the coding journey!",
                             AuthorName = users[0].UserName,
                             //AuthorPhoto = users[0].Photos.FirstOrDefault(x => x.IsMain).Url,
                             FavoriteBy = new List<Domain.FavoriteArticles>
@@ -45,7 +42,7 @@ namespace Persistence
                         },
                         new Articles()
                         {
-                            Title = "What should I choose ? VSCode or Visual Studio ?",
+                            Title = "What should I choose ? VSCode or Visual Studio ?(Dummy article 2)",
                             CreateDate = DateTime.UtcNow.AddMonths(-1),
                             Category = "Others",
                             Content = "To be launched",
@@ -57,26 +54,14 @@ namespace Persistence
                         },
                         new Articles()
                         {
-                            Title = "Is React better?",
+                            Title = "Is React better? (Dummy article 3)",
                             CreateDate = DateTime.UtcNow.AddMonths(-1),
-                            Category = "Others",
+                            Category = "React",
                             Content = "To be launched",
                             AuthorName = users[1].UserName,
                             FavoriteBy = new List<Domain.FavoriteArticles>
                             {
                                 new Domain.FavoriteArticles { AppUser = users[1] }
-                            }
-                        },
-                        new Articles()
-                        {
-                            Title = "How to land a IT job in Vancouver ?",
-                            CreateDate = DateTime.UtcNow.AddMonths(-2),
-                            Category = "Others",
-                            Content = "To be launched",
-                            AuthorName = users[2].UserName,
-                            FavoriteBy = new List<Domain.FavoriteArticles>
-                            {
-                                new Domain.FavoriteArticles { AppUser = users[2] }
                             }
                         }
                     };

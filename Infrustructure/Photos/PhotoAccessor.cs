@@ -1,15 +1,11 @@
-﻿using Application.Core;
-using Application.Interface;
+﻿using Application.Interface;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Infrustructure.Photos;
-using Infrustructure.Security;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using ImageMagick;
 
 namespace Application.Photos
 {
@@ -39,6 +35,7 @@ namespace Application.Photos
 
                 var blob = container.GetBlobClient(fileName);
                 await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots);
+
                 using (var fileStream = file.OpenReadStream())
                 {
                     var newImage = cropImage(fileStream, new Size(200, 200), true);
@@ -48,7 +45,8 @@ namespace Application.Photos
                     // Convert Image to Strem
                     using (var memoryStream = new MemoryStream())
                     {
-                        newImage.Save(memoryStream, ImageFormat.Png);
+                        newImage.Format = MagickFormat.Png;
+                        newImage.Write(memoryStream);
                         memoryStream.Position = 0; // We need to reset the Position before we read the stream
                         await blob.UploadAsync(memoryStream, new BlobHttpHeaders { ContentType = file.ContentType });
                     }   
@@ -85,7 +83,7 @@ namespace Application.Photos
         /// <param name="size"></param>
         /// <param name="PreserveRatio"></param>
         /// <returns></returns>
-        public Image cropImage (Stream origin, Size size, bool PreserveRatio)
+        public MagickImage cropImage (Stream origin, Size size, bool PreserveRatio)
         {
 
             if (origin == null)
@@ -93,17 +91,16 @@ namespace Application.Photos
 
             int newWidth, newHeight = 0;
 
-            // This only works on Windows
-            Image originalImage = Image.FromStream(origin);
+            var _image = new MagickImage(origin);
 
             if (PreserveRatio)
             {
-                float WidthRatio = (float)size.Width / originalImage.Width;
-                float HeightRatio = (float)size.Height / originalImage.Height;
+                float WidthRatio = (float)size.Width / _image.Width;
+                float HeightRatio = (float)size.Height / _image.Height;
                 float Ratio = WidthRatio > HeightRatio ? WidthRatio : HeightRatio;
-                newWidth = (int)(originalImage.Width * Ratio);
-                newHeight = (int)(originalImage.Height * Ratio);
-                
+                newWidth = (int)(_image.Width * Ratio);
+                newHeight = (int)(_image.Height * Ratio);
+
             }
             else
             {
@@ -111,18 +108,37 @@ namespace Application.Photos
                 newHeight = size.Height;
             }
 
-            Image newImage = new Bitmap(originalImage, newWidth, newHeight);
+            //// This only works on Windows
+            //Image originalImage = Image.FromStream(origin);
 
-            // Keep the photo's quality as high quality
-            using (Graphics graphicsHandle = Graphics.FromImage(newImage))
-            {
-                graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphicsHandle.DrawImage(newImage, 0, 0, newWidth, newHeight);
-            }
+            //if (PreserveRatio)
+            //{
+            //    float WidthRatio = (float)size.Width / originalImage.Width;
+            //    float HeightRatio = (float)size.Height / originalImage.Height;
+            //    float Ratio = WidthRatio > HeightRatio ? WidthRatio : HeightRatio;
+            //    newWidth = (int)(originalImage.Width * Ratio);
+            //    newHeight = (int)(originalImage.Height * Ratio);
+            //}
+            //else
+            //{
+            //    newWidth = size.Width;
+            //    newHeight = size.Height;
+            //}
 
-            FixRotate(newImage);
+            _image.Resize(newWidth, newHeight);
 
-            return newImage;
+            //Image newImage = new Bitmap(originalImage, newWidth, newHeight);
+            
+            //// Keep the photo's quality as high quality
+            //using (Graphics graphicsHandle = Graphics.FromImage(newImage))
+            //{
+            //    graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            //    graphicsHandle.DrawImage(newImage, 0, 0, newWidth, newHeight);
+            //}
+
+            //FixRotate(newImage);
+
+            return _image;
 
         }
 

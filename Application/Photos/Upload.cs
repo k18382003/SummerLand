@@ -1,11 +1,9 @@
 ﻿using Application.Core;
 using Application.Interface;
-using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Application.Photos
 {

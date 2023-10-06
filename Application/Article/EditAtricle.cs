@@ -3,7 +3,6 @@ using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Article

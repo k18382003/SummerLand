@@ -3,16 +3,9 @@ using Application.DTOs;
 using Application.Interface;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Persistence;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Application.Article
 {

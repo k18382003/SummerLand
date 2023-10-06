@@ -1,14 +1,8 @@
 ﻿using Application.Core;
 using Application.Interface;
-using Application.Profiles;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Follower
 {

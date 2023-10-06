@@ -1,8 +1,6 @@
 ﻿using Application.Article;
 using Application.Favorites;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace API.Controllers
 {

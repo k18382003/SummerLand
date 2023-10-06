@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState } from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
@@ -51,7 +51,7 @@ export default observer(function ArticleForm() {
     if (article.artID === '') {
       article.artID = uuidv4();
       await CreateArticle(article)
-      navigate(`/article/${article.artID}`)
+      navigate(`/article/${article.artID}`, {replace : true} )
     }
     else {
       await EditArticle(article)
@@ -72,7 +72,7 @@ export default observer(function ArticleForm() {
             validationSchema={validationSchema}
             enableReinitialize
             initialValues={article}
-            onSubmit={values => handleFormSubmit(values)}>
+            onSubmit={(values) => handleFormSubmit(values)}>
             {({ handleSubmit }) => (
               <Segment clearing>
                 <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>

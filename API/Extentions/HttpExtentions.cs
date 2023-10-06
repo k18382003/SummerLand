@@ -1,7 +1,4 @@
-﻿
-using System.Reflection.Metadata;
-using System.Text.Json;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+﻿using System.Text.Json;
 namespace API.Extentions
 {
     public static class HttpExtentions

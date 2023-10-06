@@ -1,6 +1,4 @@
-﻿using AutoMapper.Execution;
-using Microsoft.AspNetCore.Authentication;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 namespace API.Services
 {

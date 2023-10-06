@@ -28,7 +28,16 @@ export default function ContactInfo() {
                 <Header.Content>
                     Follow Me:
                     <HeaderSubHeader as={Link} to='https://www.instagram.com/k18382003/'>
-                        k18382003
+                        k18382003_instagram
+                    </HeaderSubHeader>
+                </Header.Content>
+            </Header>
+            <Header as="h3">
+                <Icon name="github" />
+                <Header.Content>
+                    See my works
+                    <HeaderSubHeader as={Link} to='https://github.com/k18382003'>
+                        k18382003_github
                     </HeaderSubHeader>
                 </Header.Content>
             </Header>

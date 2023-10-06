@@ -1,7 +1,4 @@
-﻿using Application.Favorites;
-using Application.Photos;
-using Domain;
-using Microsoft.AspNetCore.Http;
+﻿using Application.Photos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Claims;
-
-namespace Application.Interface
+﻿namespace Application.Interface
 {
     public interface IUserAccessor
     {

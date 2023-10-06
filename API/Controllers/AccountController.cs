@@ -1,10 +1,7 @@
 ﻿using API.DTOs;
 using API.Services;
-using Azure.Core;
 using Domain;
-using FluentValidation.Validators;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

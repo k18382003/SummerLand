@@ -3,7 +3,6 @@ using Application.Interface;
 using Domain;
 using MediatR;
 using Persistence;
-using System.Security.Claims;
 
 namespace Application.Article
 {

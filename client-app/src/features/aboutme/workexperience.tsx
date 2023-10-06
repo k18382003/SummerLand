@@ -1,68 +1,67 @@
 import { Checkbox, Divider, Grid, Header, List, Segment } from "semantic-ui-react";
-import {CSSProperties, useState}  from 'react';
+import { CSSProperties, useState } from 'react';
 
-interface MyCustomCSS extends CSSProperties  {
+interface MyCustomCSS extends CSSProperties {
     '--accent-color': string;
-  }
+}
 
-export default function Workexperience()
-{
+export default function Workexperience() {
     const [listOrder, setOrder] = useState('close');
     const [close, setClose] = useState(true);
     const [individual, setIndividual] = useState(false);
 
-    return(
+    return (
         <>
             <Segment raised>
-                <Checkbox style={{float:"right"}} label='Collapse All' checked={close} onChange={() => {setClose(preState => !preState);setIndividual(false)}} toggle></Checkbox>
+                <Checkbox style={{ float: "right" }} label='Collapse All' checked={close} onChange={() => { setClose(preState => !preState); setIndividual(false) }} toggle></Checkbox>
                 <Header as='h2'>Work Experience</Header>
                 <Divider />
-                <br/>
+                <br />
                 <Grid textAlign="center" columns={3}>
                     <List bulleted className="timeline_ul">
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#41516C'} as MyCustomCSS}> 
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#41516C' } as MyCustomCSS}>
                             <div className="date">Dec 2020 - Mar 2023</div>
                             <div className="title jobtitle">
-                                <a className="descr_link" onClick={() => {setOrder("1");setIndividual(true);setClose(false)}}>Backend Developer</a>
+                                <a className="descr_link" onClick={() => { setOrder("1"); setIndividual(true); setClose(false) }}>Backend Developer</a>
                             </div>
                             {(() => {
-                                    if (listOrder == "1" && individual) {
+                                if (listOrder == "1" && individual) {
                                     return (
                                         <>
-                                        <div className="title">Digihua Intelligent Systems Co., Ltd</div>
-                                        <div className="add" >Taichung, Taiwan</div>
-                                        <div className="descr">
-                                            <List>
-                                                <List.Item>Communicate with SA (Systems Analyst) and SD (System Designer) for the new function requirements</List.Item>
-                                                <List.Item>Develop, modify and maintain current software product</List.Item>
-                                                <List.Item>Provide tech support to the front line consultant if they report any issues of the product</List.Item>
-                                            </List>
-                                            </div>                    
+                                            <div className="title">Digihua Intelligent Systems Co., Ltd</div>
+                                            <div className="add" >Taichung, Taiwan</div>
+                                            <div className="descr">
+                                                <List>
+                                                    <List.Item>Communicate with SA (Systems Analyst) and SD (System Designer) for the new function requirements</List.Item>
+                                                    <List.Item>Develop, modify and maintain current software product</List.Item>
+                                                    <List.Item>Provide tech support to the front line consultant if they report any issues of the product</List.Item>
+                                                </List>
+                                            </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
-                                        <div className="title">Digihua Intelligent Systems Co., Ltd</div>
-                                        <div className="add" >Taichung, Taiwan</div>
-                                        <div className="descr">
-                                            <List>
-                                                <List.Item>Communicate with SA (Systems Analyst) and SD (System Designer) for the new function requirements</List.Item>
-                                                <List.Item>Develop, modify and maintain current software product</List.Item>
-                                                <List.Item>Provide tech support to the front line consultant if they report any issues of the product</List.Item>
-                                            </List>
-                                            </div>                    
+                                            <div className="title">Digihua Intelligent Systems Co., Ltd</div>
+                                            <div className="add" >Taichung, Taiwan</div>
+                                            <div className="descr">
+                                                <List>
+                                                    <List.Item>Communicate with SA (Systems Analyst) and SD (System Designer) for the new function requirements</List.Item>
+                                                    <List.Item>Develop, modify and maintain current software product</List.Item>
+                                                    <List.Item>Provide tech support to the front line consultant if they report any issues of the product</List.Item>
+                                                </List>
+                                            </div>
                                         </>
-                                    )        
+                                    )
                                 }
-                            })()}                        
+                            })()}
                         </List.Item>
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#FBCA3E'} as MyCustomCSS}> 
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#FBCA3E' } as MyCustomCSS}>
                             <div className="date">October 2018 to May 2020</div>
-                            <div className="title jobtitle"><a className="descr_link" onClick={() => {setOrder("2");setIndividual(true);setClose(false)}}>Registra</a>
+                            <div className="title jobtitle"><a className="descr_link" onClick={() => { setOrder("2"); setIndividual(true); setClose(false) }}>Registra</a>
                             </div>
                             {(() => {
-                                    if (listOrder == "2" && individual) {
+                                if (listOrder == "2" && individual) {
                                     return (
                                         <>
                                             <div className="title">ISS Language and Career College of BC Location</div>
@@ -72,17 +71,17 @@ export default function Workexperience()
                                                     <List.Item>Introduce the programs to the potential students</List.Item>
                                                     <List.Item>Helping students to arrange their courses</List.Item>
                                                     <List.Item>Handling payments</List.Item>
-                                                    <List.Item>Confirms and produces a range of student 
-                                                        documents required by students, supervisors, and 
-                                                        teachers(e.g. verification of enrolment letters, 
-                                                        official transcripts, confirms enrolment and 
+                                                    <List.Item>Confirms and produces a range of student
+                                                        documents required by students, supervisors, and
+                                                        teachers(e.g. verification of enrolment letters,
+                                                        official transcripts, confirms enrolment and
                                                         attendance, etc)</List.Item>
                                                     <List.Item>Develop marketing plans to attract more Chinese or Taiwanese students</List.Item>
                                                 </List>
-                                            </div>                   
+                                            </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
                                             <div className="title">ISS Language and Career College of BC Location</div>
@@ -92,24 +91,24 @@ export default function Workexperience()
                                                     <List.Item>Introduce the programs to the potential students</List.Item>
                                                     <List.Item>Helping students to arrange their courses</List.Item>
                                                     <List.Item>Handling payments</List.Item>
-                                                    <List.Item>Confirms and produces a range of student 
-                                                    documents required by students, supervisors, and 
-                                                    teachers(e.g. verification of enrolment letters, 
-                                                    official transcripts, confirms enrolment and 
-                                                    attendance, etc)</List.Item>
-                                                <List.Item>Develop marketing plans to attract more Chinese or Taiwanese students</List.Item>
-                                            </List>
-                                        </div>                   
-                                    </>
-                                    )        
+                                                    <List.Item>Confirms and produces a range of student
+                                                        documents required by students, supervisors, and
+                                                        teachers(e.g. verification of enrolment letters,
+                                                        official transcripts, confirms enrolment and
+                                                        attendance, etc)</List.Item>
+                                                    <List.Item>Develop marketing plans to attract more Chinese or Taiwanese students</List.Item>
+                                                </List>
+                                            </div>
+                                        </>
+                                    )
                                 }
-                            })()} 
+                            })()}
                         </List.Item>
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#E24A68'} as MyCustomCSS}> 
-                        <div className="date">May 2016 to March 2018</div>
-                            <div className="title jobtitle"><a className="descr_link" onClick={() => {setOrder("3");setIndividual(true);setClose(false)}}>English Teacher</a></div>
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#E24A68' } as MyCustomCSS}>
+                            <div className="date">May 2016 to March 2018</div>
+                            <div className="title jobtitle"><a className="descr_link" onClick={() => { setOrder("3"); setIndividual(true); setClose(false) }}>English Teacher</a></div>
                             {(() => {
-                                    if (listOrder == "3" && individual) {
+                                if (listOrder == "3" && individual) {
                                     return (
                                         <>
                                             <div className="title">Elite Institute (Language center)</div>
@@ -123,7 +122,7 @@ export default function Workexperience()
                                             </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
                                             <div className="title">Elite Institute (Language center)</div>
@@ -136,15 +135,15 @@ export default function Workexperience()
                                                 </List>
                                             </div>
                                         </>
-                                    )        
+                                    )
                                 }
-                            })()}  
+                            })()}
                         </List.Item>
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#1B5F8C'} as MyCustomCSS}> 
-                        <div className="date">September 2015 to May 2016</div>
-                            <div className="title jobtitle"><a className="descr_link" onClick={() => {setOrder("4");setIndividual(true);setClose(false)}}>Project Manager Assistant</a></div> 
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#1B5F8C' } as MyCustomCSS}>
+                            <div className="date">September 2015 to May 2016</div>
+                            <div className="title jobtitle"><a className="descr_link" onClick={() => { setOrder("4"); setIndividual(true); setClose(false) }}>Project Manager Assistant</a></div>
                             {(() => {
-                                    if (listOrder == "4" && individual) {
+                                if (listOrder == "4" && individual) {
                                     return (
                                         <>
                                             <div className="title">Feng Tay Group (Manufactory of NIKE, Inc)</div>
@@ -158,7 +157,7 @@ export default function Workexperience()
                                             </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
                                             <div className="title">Feng Tay Group (Manufactory of NIKE, Inc)</div>
@@ -171,15 +170,15 @@ export default function Workexperience()
                                                 </List>
                                             </div>
                                         </>
-                                    )        
+                                    )
                                 }
-                            })()}  
+                            })()}
                         </List.Item>
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#4CADAD'} as MyCustomCSS}> 
-                        <div className="date">January 2013 to June 2015</div>
-                            <div className="title jobtitle"><a className="descr_link" onClick={() => {setOrder("5");setIndividual(true);setClose(false)}}>Woking Holiday</a></div> 
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#4CADAD' } as MyCustomCSS}>
+                            <div className="date">January 2013 to June 2015</div>
+                            <div className="title jobtitle"><a className="descr_link" onClick={() => { setOrder("5"); setIndividual(true); setClose(false) }}>Woking Holiday</a></div>
                             {(() => {
-                                    if (listOrder == "5" && individual) {
+                                if (listOrder == "5" && individual) {
                                     return (
                                         <>
                                             <div className="add" >Western Australia</div>
@@ -192,7 +191,7 @@ export default function Workexperience()
                                             </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
                                             <div className="add" >Western Australia</div>
@@ -204,15 +203,15 @@ export default function Workexperience()
                                                 </List>
                                             </div>
                                         </>
-                                    )        
+                                    )
                                 }
-                            })()}  
+                            })()}
                         </List.Item>
-                        <List.Item className="timeline_li" style = {{ '--accent-color':'#455d'} as MyCustomCSS}> 
-                        <div className="date">April 2012 to December 2012</div>
-                            <div className="title jobtitle"><a className="descr_link" onClick={() => {setOrder("6");setIndividual(true);setClose(false)}}>Sales Representative</a></div> 
+                        <List.Item className="timeline_li" style={{ '--accent-color': '#455d' } as MyCustomCSS}>
+                            <div className="date">April 2012 to December 2012</div>
+                            <div className="title jobtitle"><a className="descr_link" onClick={() => { setOrder("6"); setIndividual(true); setClose(false) }}>Sales Representative</a></div>
                             {(() => {
-                                    if (listOrder == "6" && individual) {
+                                if (listOrder == "6" && individual) {
                                     return (
                                         <>
                                             <div className="title">Wells English (Language center)</div>
@@ -226,7 +225,7 @@ export default function Workexperience()
                                             </div>
                                         </>
                                     )
-                                    } else if (!individual && !close) {
+                                } else if (!individual && !close) {
                                     return (
                                         <>
                                             <div className="title">Wells English (Language center)</div>
@@ -239,14 +238,14 @@ export default function Workexperience()
                                                 </List>
                                             </div>
                                         </>
-                                    )        
+                                    )
                                 }
-                            })()}  
+                            })()}
                         </List.Item>
                     </List>
                 </Grid>
                 <div className="credits">
-                    <a target="_blank" href="https://www.freepik.com/free-vector/infographic-template-with-yearly-info_1252895.htm">inspired by</a>
+                    <a target="_blank" href="https://www.freepik.com/free-vector/infographic-template-with-yearly-info_1252895.htm">inspired by freepik</a>
                 </div>
             </Segment>
         </>

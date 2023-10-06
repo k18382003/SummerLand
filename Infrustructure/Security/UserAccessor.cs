@@ -1,7 +1,5 @@
 ﻿using Application.Interface;
-using Domain;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace Infrustructure.Security

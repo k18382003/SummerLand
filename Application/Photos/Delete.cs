@@ -3,7 +3,6 @@ using Application.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Application.Photos
 {

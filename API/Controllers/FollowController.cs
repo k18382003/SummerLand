@@ -1,7 +1,4 @@
-﻿
-using Application.Article;
-using Application.Favorites;
-using Application.Follower;
+﻿using Application.Follower;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

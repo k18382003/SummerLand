@@ -4,10 +4,8 @@ using Application.Interface;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Application.Comments
 {

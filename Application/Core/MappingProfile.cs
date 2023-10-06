@@ -1,8 +1,6 @@
 ﻿using Application.DTOs;
-using Application.Interface;
 using AutoMapper;
 using Domain;
-using Microsoft.Identity.Client;
 
 namespace Application.Core
 {

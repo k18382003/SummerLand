@@ -13,7 +13,7 @@ export default observer(function DeleteArticleMsg({ artID }: Props) {
   const navigate = useNavigate();
 
   function handleDelete(id: string) {
-    articlestore.DeleteArticle(id).then(() => navigate('/articles'))
+    articlestore.DeleteArticle(id).then(() => navigate('/article'))
   }
 
   return (

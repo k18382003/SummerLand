@@ -1,16 +1,11 @@
 ﻿using API.Services;
 using Domain;
 using Infrustructure.Security;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
-using System.ComponentModel;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace API.Extentions
