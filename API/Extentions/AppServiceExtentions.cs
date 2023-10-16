@@ -87,7 +87,7 @@ namespace API.Extentions
             {
                 opt.SignIn.RequireConfirmedEmail = true;
             });
-            services.Configure<AzureSetting>(config.GetSection("AzureBlobStorage"));
+            services.Configure<CloudinarySetting>(config.GetSection("Cloudinary"));
             services.AddSignalR();
 
             return services;
