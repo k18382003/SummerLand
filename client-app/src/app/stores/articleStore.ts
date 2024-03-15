@@ -29,7 +29,7 @@ export default class ArticleStore {
 
     get articleByDate() {
         return Array.from(this.articlesMap.values()).sort((a, b) =>
-            Date.parse(a.createDate) - Date.parse(b.createDate))
+            Date.parse(b.createDate) - Date.parse(a.createDate))
     }
 
     setPredicate = (predicate: string, active: any) => {
