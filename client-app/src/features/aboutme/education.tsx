@@ -1,14 +1,24 @@
 
-import {Divider, Grid, Header, Segment } from "semantic-ui-react";
+import { Divider, Grid, Header, Segment } from "semantic-ui-react";
 
-export default function Education(){
+export default function Education() {
 
-    return(
+    return (
         <>
             <Segment raised>
                 <Header as='h2'>Eduction</Header>
                 <Divider />
                 <Grid >
+                    <Grid.Row >
+                        <Grid.Column textAlign="center">
+                            <Header as='h3'>Brainstation</Header>
+                            <p className="edu_time">December 2023 ~ March 2024, Vancouver BC, Canada</p>
+                            <p className="degree_course">Software Engineering BootCamp</p>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Divider horizontal>
+                        <Header as='h6' color="olive">▲▲Software Development Diploma▲▲</Header>
+                    </Divider>
                     <Grid.Row >
                         <Grid.Column textAlign="center">
                             <Header as='h3'>Institute for Information Industry</Header>
@@ -17,7 +27,7 @@ export default function Education(){
                         </Grid.Column>
                     </Grid.Row>
                     <Divider horizontal>
-                        <Header as='h6' color="purple">▲▲Software Development Certification▲▲</Header> 
+                        <Header as='h6' color="purple">▲▲Software Development Certification▲▲</Header>
                     </Divider>
                     <Grid.Row>
                         <Grid.Column textAlign="center">
@@ -27,7 +37,7 @@ export default function Education(){
                         </Grid.Column>
                     </Grid.Row>
                     <Divider horizontal>
-                        <Header as='h6' color="blue">▲▲Post-secondary Diploma▲▲</Header> 
+                        <Header as='h6' color="blue">▲▲Post-secondary Diploma▲▲</Header>
                     </Divider>
                     <Grid.Row>
                         <Grid.Column textAlign="center">
@@ -37,7 +47,7 @@ export default function Education(){
                         </Grid.Column>
                     </Grid.Row>
                     <Divider horizontal>
-                        <Header as='h6' color="teal">▲▲Bachelor Degree▲▲</Header> 
+                        <Header as='h6' color="teal">▲▲Bachelor Degree▲▲</Header>
                     </Divider>
                 </Grid>
             </Segment>

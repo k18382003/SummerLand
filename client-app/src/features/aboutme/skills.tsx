@@ -16,12 +16,15 @@ export default function Skills() {
                         <br />
                         <Card.Description>
                             <List bulleted>
-                                <List.Item>HTML5 - 2 years</List.Item>
-                                <List.Item>CSS - 2 years</List.Item>
-                                <List.Item>Microsoft SQL Server - 2 years</List.Item>
+                                <List.Item>HTML - 3 years</List.Item>
+                                <List.Item>CSS - 3 years</List.Item>
+                                <List.Item>JavaScript - 3 year</List.Item>
+                                <List.Item>SASS - 1 year</List.Item>
+                                <List.Item>MSSQL - 2 years</List.Item>
                                 <List.Item>Oracle - 2 years</List.Item>
+                                <List.Item>MySQL - 0.5 year</List.Item>
+                                <List.Item>PostgreSQL - 0.5 year</List.Item>
                                 <List.Item>Visual Basic - 2 years</List.Item>
-                                <List.Item>JavaScript - 1 year</List.Item>
                                 <List.Item>Python - 1 year</List.Item>
                             </ List>
                         </Card.Description>
@@ -37,7 +40,8 @@ export default function Skills() {
                             <List bulleted>
                                 <List.Item>.Net - 2 years</List.Item>
                                 <List.Item>Bootstrap - 0.5 year</List.Item>
-                                <List.Item>React.js - 0.5 year</List.Item>
+                                <List.Item>React.js - 1 year</List.Item>
+                                <List.Item>Express.js - 1 year</List.Item>
                             </List>
                         </Card.Description>
                     </Card.Content>
@@ -53,7 +57,7 @@ export default function Skills() {
                                 <List.Item>Visual Studio - 3 years</List.Item>
                                 <List.Item>Visual Studio Code - 3 years</List.Item>
                                 <List.Item>SQL Server Management Studio - 2 years</List.Item>
-                                <List.Item>Git - 1 year</List.Item>
+                                <List.Item>Git - 3 year</List.Item>
                                 <List.Item>TFS - 1 year</List.Item>
                             </List>
                         </Card.Description>
