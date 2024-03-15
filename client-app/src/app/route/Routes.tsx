@@ -13,6 +13,7 @@ import RequestPage from "../../features/email/RequestPage";
 import ResendConfirm from "../../features/email/ResendConfirm";
 import ErrorPage from "../../features/email/ErrorPage";
 import ProfilePage from "../../features/profile/ProfilePage";
+import RequireAuth from "../../features/user/requireAuth";
 
 export const routes: RouteObject[] = [
     {
@@ -20,20 +21,35 @@ export const routes: RouteObject[] = [
         element: <App />,
         children: [
             {
-                path: '/article',
-                element: <ArticleDashBoard />
-            },
-            {
-                path: '/article/:id',
-                element: <ArticlesDetail />
-            },
-            {
-                path: '/writearticle',
-                element: <ArticleForm key='create' />
-            },
-            {
-                path: '/manage/:id',
-                element: <ArticleForm key='manage' />
+                element: <RequireAuth />,
+                children: [
+                    {
+                        path: '/article',
+                        element: <ArticleDashBoard />
+                    },
+                    {
+                        path: '/article/:id',
+                        element: <ArticlesDetail />
+                    },
+                    {
+                        path: '/writearticle',
+                        element: <ArticleForm key='create' />
+                    },
+                    {
+                        path: '/manage/:id',
+                        element: <ArticleForm key='manage' />
+                    },
+                    {
+                        path: '/failed-resend',
+                        element: <ErrorPage />
+                    },
+                    {
+                        path: '/profile/:username',
+                        element: <ProfilePage />,
+
+                    },
+
+                ]
             },
             {
                 path: '/error',
@@ -66,15 +82,6 @@ export const routes: RouteObject[] = [
             {
                 path: '/resend-email',
                 element: <ResendConfirm />
-            },
-            {
-                path: '/failed-resend',
-                element: <ErrorPage />
-            },
-            {
-                path: '/profile/:username',
-                element: <ProfilePage />,
-                               
             },
             {
                 path: '*',

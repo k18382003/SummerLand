@@ -47,6 +47,7 @@ namespace API.Controllers
 
             if (result)
             {
+                await SetRefreshToken(user);
                 return createUserDto(user);                
             }
             
@@ -90,6 +91,8 @@ namespace API.Controllers
                     return BadRequest("Email Not Confirmed");
                 }
 
+                //Before generate jwt, generate refreshtoken first
+                await SetRefreshToken(user);
                 return createUserDto(user);
             }
 
@@ -103,10 +106,44 @@ namespace API.Controllers
         {
             var user = await _UserManager.Users.Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+            await SetRefreshToken(user);
+            return createUserDto(user);
+        }
+
+        [Authorize]
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["RefreshToken"];
+            var user = await _UserManager.Users.Include(r => r.refreshTokens)
+                    .Include(x => x.Photos)
+                    .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+            if (user == null) return Unauthorized();
+
+            var oldToken = user.refreshTokens.FirstOrDefault(r => r.token == refreshToken);
+
+            if (oldToken != null && !oldToken.isActive) return Unauthorized();
 
             return createUserDto(user);
         }
 
+
+        private async Task SetRefreshToken(AppUser user)
+        {
+            var refreshToken = _Token.GenerateRefreshToken();
+            user.refreshTokens.Add(refreshToken);
+            await _UserManager.UpdateAsync(user);
+
+            var cookieOption = new CookieOptions
+            {
+                // To avoid Cross-site Scripting attack (XSS)
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7) // Same as refresh token
+            };
+
+            // Return cookie from server to client
+            Response.Cookies.Append("RefreshToken", refreshToken.token, cookieOption);
+        }
 
         private UserDto createUserDto(AppUser user)
         {

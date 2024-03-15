@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(async res => {
     }
     return res;
 }, (error: AxiosError) => {
-    const { data, status, config } = error.response as AxiosResponse;
+    const { data, status, config, headers } = error.response as AxiosResponse;
 
     switch (status) {
         case 400:
@@ -66,9 +66,16 @@ axiosInstance.interceptors.response.use(async res => {
             }
             break;
         case 401:
-            toast.error('Unauthorized', {
-                position: "top-center"
-            });
+            if (headers['www-authenticate']?.startsWith('Bearer error="invalid_token')) {
+                store.accountstore.logout();
+                toast.error('Session expired. Please login agin.', {
+                    position: "top-center"
+                });
+            } else {
+                toast.error('Unauthorized', {
+                    position: "top-center"
+                });
+            }
             break;
         case 403:
             toast.error('forbidden', {
@@ -113,7 +120,8 @@ const Articles = {
 const Account = {
     CurrentUser: () => requests.get<User>('./account'),
     LogIn: (user: UserFormValue) => requests.post<User>('./account/login', user),
-    Register: (user: UserFormValue) => requests.post<User>('./account/register', user)
+    Register: (user: UserFormValue) => requests.post<User>('./account/register', user),
+    RefreshToken: () => requests.post<User>('./account/refreshToken', {})
 }
 
 const Email = {

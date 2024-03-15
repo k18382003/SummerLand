@@ -15,7 +15,6 @@ body {
 }
 
 #textContent img {
-  width: 100%;
   object-fit: contain;
 }
 

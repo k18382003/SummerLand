@@ -16,5 +16,7 @@ namespace Domain
         public ICollection<FavoriteArticles> FavoriteArticles { get; set; }
 
         public ICollection<Photos> Photos { get; set; }
+
+        public ICollection<RefreshToken> refreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

@@ -1,4 +1,4 @@
-import {useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
@@ -45,7 +45,7 @@ export default observer(function ArticleForm() {
 
   useEffect(() => {
     if (id) LoadArticle(id).then(article => setArticle(article!))
-  }, [id, LoadArticle])
+  }, [id])
 
   async function handleFormSubmit(article: Article) {
     if (article.artID === '') {
@@ -67,7 +67,6 @@ export default observer(function ArticleForm() {
         <GuestMessage functionName='wrtie article' />
         :
         <>
-          {console.log(article.isauthor + ' ' + article.myFav)}
           <Formik
             validationSchema={validationSchema}
             enableReinitialize
@@ -77,7 +76,7 @@ export default observer(function ArticleForm() {
               <Segment clearing>
                 <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                   <MyTextField label='Article Title' name='title' placeholder='Title' />
-                  <MyEditorField label='Artilce Content' name='content' placeholder={'content'} />
+                  <MyEditorField label='Artilce Content' name='content' placeholder='content' />
                   <MyDropDownField label='Article Category' name='category' placeholder="Category" option={CategoryOption} />
                   <Button as={Link} to="/article" floated='right' color='grey' content='Cancel' />
                   <Button loading={loading} floated='right' color='black' type='submit' content='Save' />

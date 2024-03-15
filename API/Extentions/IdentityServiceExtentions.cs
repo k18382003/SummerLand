@@ -31,11 +31,15 @@ namespace API.Extentions
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
-                       ValidateIssuerSigningKey = true,
-                       IssuerSigningKey = key,
-                       // we don't validate issuer and audience for now
-                       ValidateIssuer = false,
-                       ValidateAudience = false
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        // we don't validate issuer and audience for now
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        // Adding token lifetime(control login session)
+                        ValidateLifetime = true,
+                        // Turn off default extra 5 mins
+                        ClockSkew = TimeSpan.Zero
                     };
 
                     opt.Events = new JwtBearerEvents()
