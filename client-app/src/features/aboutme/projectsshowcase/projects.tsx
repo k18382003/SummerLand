@@ -3,7 +3,7 @@ import { Button, Card, Divider, Header, Image, Segment } from "semantic-ui-react
 import 'semantic-ui-css/semantic.min.css'
 import CardContent from './CardContent.json';
 import './card.css';
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import Skills from "./skills";
 
 export default function Projects() {
