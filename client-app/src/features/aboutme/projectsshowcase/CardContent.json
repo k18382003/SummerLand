@@ -1,0 +1,26 @@
+[
+  {
+    "header": "Movieit",
+    "description": "Social Networking Website",
+    "skills": "Knex.js / Databases / Troubleshooting / Github action / Node.js / Continuous Integration and Continuous Delivery (CI/CD) / Git / JavaScript / JSON Web Token (JWT) / SASS / Responsive Web Design / MySQL / React.js / Web Application Design / HTML / Figma / Cascading Style Sheets (CSS) / API Development",
+    "imgUrl": "Images/MovieIt.png",
+    "linkUrl": "https://k18382003.github.io/movieit/",
+    "github": "https://github.com/k18382003/movieit"
+  },
+  {
+    "header": "ReactComponents",
+    "description": "Reusable React Components",
+    "skills": "Troubleshooting / Responsive Web Design / React.js / Web Application Design",
+    "imgUrl": "Images/ReactComponents.png",
+    "linkUrl": "https://react-components-demo.netlify.app/",
+    "github": "https://github.com/k18382003/ReactDemo"
+  },
+  {
+    "header": "Summer Tech Land",
+    "description": "Personal Blog",
+    "skills": ".NET Core / Databases / Troubleshooting / Github action / Continuous Integration and Continuous Delivery (CI/CD) / SignalR / C# / Responsive Web Design / PostgreSQL / React.js / Web Application Design / Docker / Model-View-Controller (MVC) / TypeScript / API Development",
+    "imgUrl": "Images/SummerTechLand.png",
+    "linkUrl": "https://summertechland.fly.dev/",
+    "github": "https://github.com/k18382003/SummerLand"
+  }
+]

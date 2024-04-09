@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import ContactInfo from "./modals/contactinfo";
 import Greeting from "../../images/GreetingPhoto.png";
+import Projects from "./projectsshowcase/projects";
 
 
 export default observer(function AboutMe() {
@@ -42,6 +43,7 @@ export default observer(function AboutMe() {
             <Skills />
             <Education />
             <Award />
+            <Projects />
             <Recommandation />
             <br />
         </>
