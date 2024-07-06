@@ -69,7 +69,7 @@ namespace Application.Article
                                 x.Category.ToLower().Contains(request.param.SearchKeyWords.ToLower()));
                 }
 
-                var lstArticle = await PagedList<ArticleDto>.CreateAsync(articles, request.param.PageNumber
+                var lstArticle = await PagedList<ArticleDto>.CreateAsync(articles.Reverse(), request.param.PageNumber
                         , request.param.PageSize);
 
                 var photos = await _context.Users
